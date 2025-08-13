@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie政策 - 游戏站</title>
+    <meta name="description" content="了解游戏站如何使用Cookie来改善您的浏览体验。">
+    <meta name="robots" content="index, follow">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .main-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            padding-left: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .section ul {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .section li {
+            margin-bottom: 8px;
+        }
+        
+        .cookie-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .cookie-table th,
+        .cookie-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cookie-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .cookie-table tr:hover {
+            background: #f8f9ff;
+        }
+        
+        .highlight {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            margin: 20px 0;
+        }
+        
+        .cookie-banner-demo {
+            background: #333;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .cookie-banner-demo::before {
+            content: "示例Cookie横幅";
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        .cookie-controls {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .cookie-controls h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .control-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .control-item:last-child {
+            border-bottom: none;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: #ccc;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .toggle-switch.active {
+            background: #667eea;
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        
+        .toggle-switch.active::after {
+            transform: translateX(26px);
+        }
+        
+        .last-updated {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .cookie-table {
+                font-size: 0.9rem;
+            }
+            
+            .control-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> 返回首页
+        </a>
+        
+        <div class="main-content">
+            <div class="header">
+                <h1><i class="fas fa-cookie-bite"></i> Cookie政策</h1>
+                <p>了解我们如何使用Cookie来改善您的体验</p>
+            </div>
+            
+            <div class="section">
+                <h2>什么是Cookie？</h2>
+                <p>Cookie是当您访问网站时存储在您设备上的小型文本文件。它们被广泛用于使网站正常工作，提高效率，并向网站所有者提供信息。</p>
+                <p>Cookie通常包含以下信息：</p>
+                <ul>
+                    <li>网站名称和唯一标识符</li>
+                    <li>Cookie的过期时间</li>
+                    <li>存储的数据值</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>我们如何使用Cookie？</h2>
+                <p>游戏站使用Cookie来：</p>
+                <ul>
+                    <li><strong>保存游戏进度：</strong>记录您的游戏分数和进度</li>
+                    <li><strong>记住偏好设置：</strong>如音量设置、难度选择等</li>
+                    <li><strong>改善用户体验：</strong>记住您的语言偏好和界面设置</li>
+                    <li><strong>分析网站使用情况：</strong>了解哪些游戏最受欢迎</li>
+                    <li><strong>安全保护：</strong>防止恶意攻击和滥用</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>Cookie类型</h2>
+                <p>我们使用以下类型的Cookie：</p>
+                
+                <table class="cookie-table">
+                    <thead>
+                        <tr>
+                            <th>Cookie类型</th>
+                            <th>用途</th>
+                            <th>持续时间</th>
+                            <th>必需性</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>必需Cookie</strong></td>
+                            <td>网站基本功能运行所必需</td>
+                            <td>会话期间</td>
+                            <td>必需</td>
+                        </tr>
+                        <tr>
+                            <td><strong>功能Cookie</strong></td>
+                            <td>记住用户偏好和设置</td>
+                            <td>30天</td>
+                            <td>可选</td>
+                        </tr>
+                        <tr>
+                            <td><strong>性能Cookie</strong></td>
+                            <td>收集网站使用统计信息</td>
+                            <td>1年</td>
+                            <td>可选</td>
+                        </tr>
+                        <tr>
+                            <td><strong>游戏数据Cookie</strong></td>
+                            <td>保存游戏进度和分数</td>
+                            <td>永久（直到清除）</td>
+                            <td>可选</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="section">
+                <h2>第三方Cookie</h2>
+                <p>我们的网站可能包含来自第三方服务的Cookie，包括：</p>
+                <ul>
+                    <li><strong>Google Analytics：</strong>用于网站流量分析</li>
+                    <li><strong>广告服务：</strong>用于显示相关广告（如果适用）</li>
+                    <li><strong>社交媒体插件：</strong>用于社交分享功能</li>
+                    <li><strong>外部游戏提供商：</strong>用于嵌入的第三方游戏</li>
+                </ul>
+                
+                <div class="highlight">
+                    <p><strong>注意：</strong>第三方Cookie由相应的第三方服务控制，我们建议您查看这些服务的隐私政策以了解其Cookie使用情况。</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>管理Cookie设置</h2>
+                <p>您可以通过以下方式管理Cookie：</p>
+                
+                <div class="cookie-controls">
+                    <h3><i class="fas fa-cog"></i> Cookie偏好设置</h3>
+                    
+                    <div class="control-item">
+                        <div>
+                            <strong>必需Cookie</strong>
+                            <p>网站正常运行所必需，无法禁用</p>
+                        </div>
+                        <div class="toggle-switch active"></div>
+                    </div>
+                    
+                    <div class="control-item">
+                        <div>
+                            <strong>功能Cookie</strong>
+                            <p>记住您的偏好设置和选择</p>
+                        </div>
+                        <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
+                    </div>
+                    
+                    <div class="control-item">
+                        <div>
+                            <strong>性能Cookie</strong>
+                            <p>帮助我们了解网站使用情况</p>
+                        </div>
+                        <div class="toggle-switch" onclick="toggleSwitch(this)"></div>
+                    </div>
+                    
+                    <div class="control-item">
+                        <div>
+                            <strong>游戏数据Cookie</strong>
+                            <p>保存您的游戏进度和成就</p>
+                        </div>
+                        <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>浏览器Cookie设置</h2>
+                <p>您也可以通过浏览器设置来管理Cookie：</p>
+                <ul>
+                    <li><strong>Chrome：</strong>设置 → 隐私和安全 → Cookie和其他网站数据</li>
+                    <li><strong>Firefox：</strong>选项 → 隐私与安全 → Cookie和网站数据</li>
+                    <li><strong>Safari：</strong>偏好设置 → 隐私 → Cookie和网站数据</li>
+                    <li><strong>Edge：</strong>设置 → Cookie和网站权限 → Cookie和存储的数据</li>
+                </ul>
+                
+                <div class="highlight">
+                    <p><strong>重要提醒：</strong>禁用某些Cookie可能会影响网站功能，包括游戏进度保存和个性化设置。</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Cookie横幅</h2>
+                <p>当您首次访问我们的网站时，会看到Cookie同意横幅：</p>
+                
+                <div class="cookie-banner-demo">
+                    <p><i class="fas fa-cookie-bite"></i> 我们使用Cookie来改善您的体验。继续使用本网站即表示您同意我们的Cookie政策。</p>
+                    <div style="margin-top: 10px;">
+                        <button style="background: #667eea; color: white; border: none; padding: 8px 16px; border-radius: 4px; margin-right: 10px;">接受所有</button>
+                        <button style="background: transparent; color: white; border: 1px solid white; padding: 8px 16px; border-radius: 4px;">管理设置</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>数据保留</h2>
+                <p>不同类型的Cookie有不同的保留期限：</p>
+                <ul>
+                    <li><strong>会话Cookie：</strong>浏览器关闭时自动删除</li>
+                    <li><strong>持久Cookie：</strong>在指定时间后过期</li>
+                    <li><strong>本地存储：</strong>直到用户手动清除</li>
+                </ul>
+                <p>您可以随时清除浏览器中的所有Cookie和本地存储数据。</p>
+            </div>
+            
+            <div class="section">
+                <h2>联系我们</h2>
+                <p>如果您对我们的Cookie使用有任何疑问，请联系我们：</p>
+                <ul>
+                    <li><strong>邮箱：</strong>privacy@gamestation.com</li>
+                    <li><strong>电话：</strong>400-123-4567</li>
+                    <li><strong>在线客服：</strong><a href="contact.html" style="color: #667eea;">联系我们页面</a></li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>政策更新</h2>
+                <p>我们可能会不时更新此Cookie政策。任何更改都会在此页面上发布，重大更改会通过网站通知或电子邮件通知用户。</p>
+            </div>
+            
+            <div class="last-updated">
+                <p><strong>最后更新时间：</strong>2024年1月15日</p>
+                <p>版本：v1.0</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleSwitch(element) {
+            element.classList.toggle('active');
+            
+            // 这里可以添加实际的Cookie设置逻辑
+            const isActive = element.classList.contains('active');
+            console.log('Cookie setting changed:', isActive);
+            
+            // 实际应用中，这里会调用相应的Cookie管理函数
+        }
+        
+        // 模拟Cookie横幅功能
+        function showCookieBanner() {
+            // 检查是否已经同意Cookie
+            if (!localStorage.getItem('cookieConsent')) {
+                // 显示Cookie横幅的逻辑
+                console.log('显示Cookie同意横幅');
+            }
+        }
+        
+        // 页面加载时检查Cookie同意状态
+        document.addEventListener('DOMContentLoaded', showCookieBanner);
+    </script>
+</body>
+</html>

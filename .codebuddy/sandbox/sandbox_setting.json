@@ -1,0 +1,20 @@
+{
+  "path": "c:\\Users\\林\\Desktop\\游戏站",
+  "desc": "专业的在线游戏平台，提供贪吃蛇、2048、记忆翻牌、井字棋等精品游戏。已完成AdSense审核优化，包含隐私政策、服务条款、联系我们等合规页面。响应式设计，适配PC和移动端。",
+  "id": "2aeedaffab6e4a1ba149ea0a9030456c",
+  "data": {
+    "spaceKey": "2aeedaffab6e4a1ba149ea0a9030456c",
+    "connections": {
+      "webIDE": "https://2aeedaffab6e4a1ba149ea0a9030456c.ap-singapore.cloudstudio.club",
+      "preview": "https://2aeedaffab6e4a1ba149ea0a9030456c--{port}.ap-singapore.cloudstudio.club",
+      "api": "https://2aeedaffab6e4a1ba149ea0a9030456c--api.ap-singapore.cloudstudio.club",
+      "pty": "https://2aeedaffab6e4a1ba149ea0a9030456c--pty.ap-singapore.cloudstudio.club"
+    }
+  },
+  "config": {
+    "api": "https://2aeedaffab6e4a1ba149ea0a9030456c--api.ap-singapore.cloudstudio.club",
+    "pty": "https://2aeedaffab6e4a1ba149ea0a9030456c--pty.ap-singapore.cloudstudio.club",
+    "region": "ap-shanghai",
+    "spaceKey": "2aeedaffab6e4a1ba149ea0a9030456c"
+  }
+}

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我们 - 游戏站</title>
+    <meta name="description" content="了解游戏站的使命、愿景和团队，我们致力于为用户提供最优质的在线游戏体验。">
+    <meta name="keywords" content="关于我们,游戏站,在线游戏,团队介绍">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        .main-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .header h1 {
+            color: #667eea;
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section h2 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section h2::after {
+            content: '';
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .mission-vision {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .card {
+            background: #f8f9ff;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .card h3 {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .feature-item {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-3px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .stats {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+        
+        .stat-item h3 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .stat-item p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .team-section {
+            text-align: center;
+            margin: 50px 0;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .team-member {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+        
+        .member-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+        
+        .contact-section {
+            background: #f8f9ff;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .contact-item {
+            padding: 20px;
+        }
+        
+        .contact-icon {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .mission-vision {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> 返回首页
+        </a>
+        
+        <div class="main-content">
+            <div class="header">
+                <h1><i class="fas fa-gamepad"></i> 关于游戏站</h1>
+                <p>我们致力于为全球用户提供最优质、最安全、最有趣的在线游戏体验，让每个人都能在游戏中找到快乐。</p>
+            </div>
+            
+            <div class="section">
+                <h2>我们的使命与愿景</h2>
+                <div class="mission-vision">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-target"></i>
+                        </div>
+                        <h3>我们的使命</h3>
+                        <p>通过创新的游戏平台和优质的服务，为用户创造愉快的游戏体验，促进游戏文化的健康发展，让游戏成为连接人与人之间的桥梁。</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3>我们的愿景</h3>
+                        <p>成为全球领先的在线游戏平台，为不同年龄段的用户提供安全、有趣、教育性的游戏内容，推动游戏产业的可持续发展。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>平台特色</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>安全可靠</h3>
+                        <p>严格的内容审核机制，确保所有游戏内容健康向上，适合全年龄段用户。</p>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>跨平台支持</h3>
+                        <p>完美适配PC、平板、手机等各种设备，随时随地享受游戏乐趣。</p>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>社区互动</h3>
+                        <p>活跃的用户社区，分享游戏心得，结交志同道合的朋友。</p>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>寓教于乐</h3>
+                        <p>精选益智类游戏，在娱乐的同时提升思维能力和反应速度。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats">
+                <h2 style="text-align: center; margin-bottom: 40px; color: white;">平台数据</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <h3>50+</h3>
+                        <p>精选游戏</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>10万+</h3>
+                        <p>注册用户</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>100万+</h3>
+                        <p>游戏次数</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>99.9%</h3>
+                        <p>服务可用性</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section team-section">
+                <h2>我们的团队</h2>
+                <p>我们是一群热爱游戏、充满激情的年轻人，致力于为用户创造最佳的游戏体验。</p>
+                
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-avatar">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h3>张明</h3>
+                        <p><strong>创始人 & CEO</strong></p>
+                        <p>10年游戏行业经验，致力于打造健康的游戏生态环境。</p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-avatar">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3>李华</h3>
+                        <p><strong>技术总监</strong></p>
+                        <p>资深全栈开发工程师，专注于用户体验和技术创新。</p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-avatar">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h3>王丽</h3>
+                        <p><strong>设计总监</strong></p>
+                        <p>UI/UX设计专家，致力于创造美观易用的界面设计。</p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-avatar">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h3>陈强</h3>
+                        <p><strong>游戏策划</strong></p>
+                        <p>游戏设计专家，负责游戏内容策划和用户体验优化。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>发展历程</h2>
+                <div style="max-width: 600px; margin: 0 auto;">
+                    <div style="background: #f8f9ff; padding: 30px; border-radius: 15px; margin: 20px 0;">
+                        <h3 style="color: #667eea; margin-bottom: 10px;">2023年1月</h3>
+                        <p>游戏站项目启动，开始平台架构设计和开发。</p>
+                    </div>
+                    
+                    <div style="background: #f8f9ff; padding: 30px; border-radius: 15px; margin: 20px 0;">
+                        <h3 style="color: #667eea; margin-bottom: 10px;">2023年6月</h3>
+                        <p>平台正式上线，首批10款精选游戏发布。</p>
+                    </div>
+                    
+                    <div style="background: #f8f9ff; padding: 30px; border-radius: 15px; margin: 20px 0;">
+                        <h3 style="color: #667eea; margin-bottom: 10px;">2023年12月</h3>
+                        <p>用户突破1万人，游戏库扩展至30款。</p>
+                    </div>
+                    
+                    <div style="background: #f8f9ff; padding: 30px; border-radius: 15px; margin: 20px 0;">
+                        <h3 style="color: #667eea; margin-bottom: 10px;">2024年1月</h3>
+                        <p>推出移动端适配，新增社区功能和用户评价系统。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-section">
+                <h2>联系我们</h2>
+                <p>我们重视每一位用户的意见和建议，欢迎随时与我们联系。</p>
+                
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>邮箱联系</h3>
+                        <p>support@gamestation.com</p>
+                        <p>business@gamestation.com</p>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h3>客服热线</h3>
+                        <p>+86-400-123-4567</p>
+                        <p>工作时间：9:00-18:00</p>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>公司地址</h3>
+                        <p>北京市朝阳区</p>
+                        <p>科技园区创新大厦</p>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>在线客服</h3>
+                        <p>微信：GameStation</p>
+                        <p>QQ群：123456789</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #e0e0e0;">
+                    <p style="color: #666; font-size: 0.9rem;">
+                        感谢您选择游戏站！我们将持续努力，为您提供更好的服务。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

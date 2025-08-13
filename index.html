@@ -1,0 +1,1958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub - Play All Games Directly</title>
+    <meta name="description" content="游戏站 - 专业的在线游戏平台，提供贪吃蛇、2048、记忆翻牌等精品游戏。安全、免费、无需下载，适合全年龄段用户。">
+    <meta name="keywords" content="在线游戏,免费游戏,网页游戏,贪吃蛇,2048,益智游戏,休闲游戏,游戏攻略">
+    <meta name="author" content="游戏站团队">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="http://localhost:3000/">
+    
+    <!-- 结构化数据 -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "游戏站",
+        "url": "http://localhost:3000/",
+        "description": "专业的在线游戏平台，提供多种精品网页游戏",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "http://localhost:3000/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #8a2be2;
+            --primary-light: #9d4fe9;
+            --primary-dark: #6a11cb;
+            --secondary: #ff6b6b;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #e0e0e0;
+            --text: #333;
+            --text-light: #666;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7f1 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--dark) 0%, #16213e 100%);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .logo i {
+            color: var(--primary-light);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav ul li a[href="guides.html"] {
+            color: var(--secondary);
+        }
+
+        nav ul li a[href="reviews.html"] {
+            color: var(--secondary);
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        nav a:hover {
+            color: var(--primary-light);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary-light);
+            transition: var(--transition);
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background: linear-gradient(rgba(26, 26, 46, 0.8), rgba(26, 26, 46, 0.8)), 
+                        url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3') no-repeat center/cover;
+            color: white;
+            margin-bottom: 3rem;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+        }
+        
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin: 2rem 0;
+            font-size: 2.2rem;
+            color: var(--dark);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .game-container {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            margin: 3rem auto;
+        }
+        
+        .game-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .game-header h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .game-frame-container {
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .game-frame-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            height: 0;
+            padding-bottom: 75%; /* 4:3 aspect ratio */
+            background: #000;
+        }
+        
+        .game-frame-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .game-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--light);
+            border: 1px solid var(--gray);
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .game-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .game-thumb {
+            height: 160px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .game-thumb i {
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .game-content {
+            padding: 1.5rem;
+        }
+        
+        .game-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .game-desc {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            min-height: 60px;
+        }
+        
+        .game-info {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            margin: 3rem auto;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        
+        .info-card {
+            background: #f9f7ff;
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+        
+        .info-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+        }
+        
+        .tab-container {
+            margin: 2rem 0;
+        }
+        
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 50px;
+            padding: 0.5rem;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 0.8rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: var(--transition);
+            font-weight: 500;
+            min-width: 120px;
+        }
+        
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-main p {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .footer-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-light);
+        }
+        
+        .footer-links .separator {
+            color: #666;
+        }
+        
+        .copyright {
+            padding-top: 1rem;
+            color: #aaa;
+            font-size: 0.9rem;
+            text-align: center;
+            border-top: 1px solid #333;
+        }
+        
+        .warning-banner {
+            background: #fff3cd;
+            color: #856404;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid #ffc107;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .warning-banner i {
+            font-size: 1.5rem;
+        }
+        
+        .external-game-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+            border: 2px dashed #e0e0e0;
+        }
+        
+        .external-game-container h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .external-game-container p {
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+        }
+        
+        .game-play-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .game-play-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
+        }
+        
+        .game-icon {
+            font-size: 1.2rem;
+        }
+        
+        .game-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--secondary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+            gap: 0.5rem;
+        }
+        
+        .page-btn {
+            background: var(--light);
+            border: 1px solid var(--gray);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        
+        .page-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .page-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .page-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0 1rem;
+            font-weight: 500;
+        }
+        
+        .games-page {
+            display: none;
+        }
+        
+        .games-page.active {
+            display: block;
+        }
+        
+        .games-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 2rem 0 1rem;
+        }
+        
+        .games-section-header h3 {
+            color: var(--dark);
+            font-size: 1.5rem;
+        }
+        
+        .games-per-page {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .games-per-page select {
+            padding: 0.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--gray);
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .game-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .game-frame-wrapper {
+                padding-bottom: 100%; /* Square aspect ratio for mobile */
+            }
+            
+            .games-section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+            
+            .footer-links {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .game-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .tabs {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+            
+            .tab {
+                min-width: 110px;
+            }
+            
+            .pagination {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-gamepad"></i>
+                    <span>GameHub</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="#featured"><i class="fas fa-star"></i> Featured</a></li>
+                        <li><a href="#games"><i class="fas fa-dice"></i> Games</a></li>
+                        <li><a href="categories.html"><i class="fas fa-th-large"></i> Categories</a></li>
+                        <li><a href="guides.html"><i class="fas fa-book"></i> Guides</a></li>
+                        <li><a href="reviews.html"><i class="fas fa-comments"></i> Reviews</a></li>
+                        <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Play All Games Directly in Your Browser</h1>
+            <p>Enjoy Poor Bunny and other popular web games without leaving this page</p>
+            <a href="#featured" class="btn"><i class="fas fa-play-circle"></i> Play Now</a>
+        </div>
+    </section>
+
+    <!-- Featured Game Section -->
+    <section class="container" id="featured">
+        <h2 class="section-title">Featured Game</h2>
+        
+        <div class="game-container">
+            <div class="game-header">
+                <h2 id="current-game-title">Poor Bunny</h2>
+                <p id="current-game-desc">Help the adorable bunny escape danger in this fast-paced running adventure!</p>
+            </div>
+            
+            <div class="game-frame-container">
+                <div class="warning-banner">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Note:</strong> Some games require direct site access. 
+                        For those, use the "Play on External Site" button.
+                    </div>
+                </div>
+                
+                <div class="game-frame-wrapper">
+                    <iframe id="game-frame" src="https://cpsgames.org/splash/poor-bunny" title="Game Frame" allowfullscreen></iframe>
+                </div>
+                
+                <div class="game-actions">
+                    <button class="action-btn" id="fullscreen-btn">
+                        <i class="fas fa-expand"></i> Fullscreen
+                    </button>
+                    <button class="action-btn" id="restart-btn">
+                        <i class="fas fa-redo"></i> Restart
+                    </button>
+                    <button class="action-btn" id="sound-btn">
+                        <i class="fas fa-volume-up"></i> Sound
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="game-info">
+            <h3 id="current-game-about">About Poor Bunny</h3>
+            <p style="margin: 1rem 0;" id="current-game-details">Poor Bunny is a thrilling endless runner game where you take on the role of a cute bunny trying to escape from various dangers. Jump over obstacles, avoid enemies, and collect coins to unlock new characters and power-ups!</p>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>How to Play</h3>
+                    <ul style="margin-left: 1.5rem;" id="current-game-instructions">
+                        <li><strong>Tap or click</strong> to make the bunny jump</li>
+                        <li>Jump over obstacles and gaps</li>
+                        <li>Collect coins for power-ups</li>
+                        <li>Avoid enemies and traps</li>
+                        <li>Complete daily challenges</li>
+                    </ul>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Game Features</h3>
+                    <ul style="margin-left: 1.5rem;" id="current-game-features">
+                        <li>Simple one-touch controls</li>
+                        <li>Multiple unlockable characters</li>
+                        <li>Power-ups and special abilities</li>
+                        <li>Global leaderboards</li>
+                        <li>Daily challenges and rewards</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- All Games Section -->
+    <section class="container" id="games">
+        <h2 class="section-title">All Games</h2>
+        
+        <div class="tab-container">
+            <div class="tabs">
+                <div class="tab active" data-tab="popular">Popular Games</div>
+                <div class="tab" data-tab="new">New Releases</div>
+                <div class="tab" data-tab="external">External Games</div>
+            </div>
+            
+            <!-- Popular Games Tab -->
+            <div class="tab-content active" id="popular-content">
+                <div class="games-section-header">
+                    <h3>Most Popular Games</h3>
+                    <div class="games-per-page">
+                        <span>Games per page:</span>
+                        <select id="popular-per-page">
+                            <option value="4">4</option>
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="games-page active" id="popular-page-1">
+                    <div class="games-grid">
+                        <div class="game-card" data-game="poor-bunny">
+                            <div class="game-thumb">
+                                <i class="fas fa-rabbit"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Poor Bunny</h3>
+                                <p class="game-desc">帮助小兔子逃离危险的跑酷游戏</p>
+                                <button class="btn play-game-btn" style="width:100%;margin-top:10px;">
+                                    <i class="fas fa-play"></i> 立即游戏
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="snake-local">
+                            <div class="game-thumb">
+                                <i class="fas fa-snake"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">贪吃蛇</h3>
+                                <p class="game-desc">经典的贪吃蛇游戏，挑战你的反应速度</p>
+                                <button class="btn play-game-btn" style="width:100%;margin-top:10px;">
+                                    <i class="fas fa-play"></i> 立即游戏
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="2048-local">
+                            <div class="game-thumb">
+                                <i class="fas fa-th"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">2048</h3>
+                                <p class="game-desc">数字合并益智游戏，挑战你的逻辑思维</p>
+                                <button class="btn play-game-btn" style="width:100%;margin-top:10px;">
+                                    <i class="fas fa-play"></i> 立即游戏
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="tetris">
+                            <div class="game-thumb">
+                                <i class="fas fa-shapes"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">俄罗斯方块</h3>
+                                <p class="game-desc">经典的俄罗斯方块游戏</p>
+                                <button class="btn play-game-btn" style="width:100%;margin-top:10px;">
+                                    <i class="fas fa-play"></i> 立即游戏
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="games-page" id="popular-page-2">
+                    <div class="games-grid">
+                        <div class="game-card" data-game="tictactoe-local">
+                            <div class="game-thumb">
+                                <i class="fas fa-hashtag"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">井字棋</h3>
+                                <p class="game-desc">经典的策略对战游戏</p>
+                                <button class="btn play-game-btn" style="width:100%;margin-top:10px;">
+                                    <i class="fas fa-play"></i> 立即游戏
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="race">
+                            <div class="game-thumb">
+                                <i class="fas fa-car"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Race Challenge</h3>
+                                <p class="game-desc">High-speed racing game with realistic physics.</p>
+                                <button class="btn play-game-btn" style="width:100%;margin-top:10px;">
+                                    <i class="fas fa-play"></i> Play Now
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="puzzle">
+                            <div class="game-thumb">
+                                <i class="fas fa-puzzle-piece"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Jigsaw Puzzle</h3>
+                                <p class="game-desc">Relaxing puzzle game with beautiful images.</p>
+                                <button class="btn play-game-btn" style="width:100%;margin-top:10px;">
+                                    <i class="fas fa-play"></i> Play Now
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="soccer">
+                            <div class="game-thumb">
+                                <i class="fas fa-futbol"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Soccer Stars</h3>
+                                <p class="game-desc">Score goals and win matches in this football game.</p>
+                                <button class="btn play-game-btn" style="width:100%;margin-top:10px;">
+                                    <i class="fas fa-play"></i> Play Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pagination">
+                    <button class="page-btn prev-btn" data-page="popular">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="page-indicator">
+                        <span id="popular-current">1</span>
+                        <span>of</span>
+                        <span id="popular-total">2</span>
+                    </div>
+                    <button class="page-btn next-btn" data-page="popular">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- New Releases Tab -->
+            <div class="tab-content" id="new-content">
+                <div class="games-section-header">
+                    <h3>New Game Releases</h3>
+                    <div class="games-per-page">
+                        <span>Games per page:</span>
+                        <select id="new-per-page">
+                            <option value="4">4</option>
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="games-page active" id="new-page-1">
+                    <div class="games-grid">
+                        <div class="game-card" data-game="robot">
+                            <div class="game-tag">New</div>
+                            <div class="game-thumb">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Robot Revolution</h3>
+                                <p class="game-desc">Build and battle robots in this futuristic strategy game.</p>
+                                <button class="btn play-game-btn" style="width:100%;margin-top:10px;">
+                                    <i class="fas fa-play"></i> Play Now
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="dragon">
+                            <div class="game-tag">New</div>
+                            <div class="game-thumb">
+                                <i class="fas fa-dragon"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Dragon Adventure</h3>
+                                <p class="game-desc">Raise your dragon and explore magical lands.</p>
+                                <button class="btn play-game-btn" style="width:100%;margin-top:10px;">
+                                    <i class="fas fa-play"></i> Play Now
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="beat">
+                            <div class="game-tag">New</div>
+                            <div class="game-thumb">
+                                <i class="fas fa-music"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Beat Master</h3>
+                                <p class="game-desc">Rhythm game with the latest chart-topping hits.</p>
+                                <button class="btn play-game-btn" style="width:100%;margin-top:10px;">
+                                    <i class="fas fa-play"></i> Play Now
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="ghost">
+                            <div class="game-tag">New</div>
+                            <div class="game-thumb">
+                                <i class="fas fa-ghost"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Ghost Hunters</h3>
+                                <p class="game-desc">Solve mysteries in haunted locations.</p>
+                                <button class="btn play-game-btn" style="width:100%;margin-top:10px;">
+                                    <i class="fas fa-play"></i> Play Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="games-page" id="new-page-2">
+                    <div class="games-grid">
+                        <div class="game-card" data-game="ocean">
+                            <div class="game-tag">New</div>
+                            <div class="game-thumb">
+                                <i class="fas fa-fish"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Ocean Explorer</h3>
+                                <p class="game-desc">Discover underwater worlds and marine life.</p>
+                                <button class="btn play-game-btn" style="width:100%;margin-top:10px;">
+                                    <i class="fas fa-play"></i> Play Now
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="space">
+                            <div class="game-tag">New</div>
+                            <div class="game-thumb">
+                                <i class="fas fa-meteor"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Space Race</h3>
+                                <p class="game-desc">Build your space empire and explore the galaxy.</p>
+                                <button class="btn play-game-btn" style="width:100%;margin-top:10px;">
+                                    <i class="fas fa-play"></i> Play Now
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="royal">
+                            <div class="game-tag">New</div>
+                            <div class="game-thumb">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Royal Challenge</h3>
+                                <p class="game-desc">Strategy game set in medieval times.</p>
+                                <button class="btn play-game-btn" style="width:100%;margin-top:10px;">
+                                    <i class="fas fa-play"></i> Play Now
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card" data-game="parkour">
+                            <div class="game-tag">New</div>
+                            <div class="game-thumb">
+                                <i class="fas fa-running"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Parkour Masters</h3>
+                                <p class="game-desc">Navigate urban environments with parkour moves.</p>
+                                <button class="btn play-game-btn" style="width:100%;margin-top:10px;">
+                                    <i class="fas fa-play"></i> Play Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pagination">
+                    <button class="page-btn prev-btn" data-page="new">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="page-indicator">
+                        <span id="new-current">1</span>
+                        <span>of</span>
+                        <span id="new-total">2</span>
+                    </div>
+                    <button class="page-btn next-btn" data-page="new">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- External Games Tab -->
+            <div class="tab-content" id="external-content">
+                <div class="warning-banner">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <strong>Important:</strong> These games cannot be embedded due to technical restrictions. 
+                        Click the buttons below to play on the original game sites.
+                    </div>
+                </div>
+                
+                <div class="games-section-header">
+                    <h3>External Games</h3>
+                    <div class="games-per-page">
+                        <span>Games per page:</span>
+                        <select id="external-per-page">
+                            <option value="4">4</option>
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="games-page active" id="external-page-1">
+                    <div class="games-grid">
+                        <div class="game-card">
+                            <div class="game-tag">External</div>
+                            <div class="game-thumb">
+                                <i class="fas fa-flag"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Minesweeper</h3>
+                                <p class="game-desc">Test your logic and memory in this classic puzzle game. Avoid the mines!</p>
+                                <a href="https://minesweeperonline.com/" class="game-play-btn" target="_blank">
+                                    <i class="fas fa-external-link-alt game-icon"></i> Play Now
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card">
+                            <div class="game-tag">External</div>
+                            <div class="game-thumb">
+                                <i class="fas fa-candy-cane"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Cut the Rope</h3>
+                                <p class="game-desc">Feed candy to Om Nom by cutting ropes in this fun physics-based puzzle game.</p>
+                                <a href="https://cuttherope.ie/" class="game-play-btn" target="_blank">
+                                    <i class="fas fa-external-link-alt game-icon"></i> Play Now
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card">
+                            <div class="game-tag">External</div>
+                            <div class="game-thumb">
+                                <i class="fas fa-dove"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Flappy Bird</h3>
+                                <p class="game-desc">Tap to fly and avoid the pipes in this simple but challenging game.</p>
+                                <a href="https://flappybird.io/" class="game-play-btn" target="_blank">
+                                    <i class="fas fa-external-link-alt game-icon"></i> Play Now
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card">
+                            <div class="game-tag">External</div>
+                            <div class="game-thumb">
+                                <i class="fas fa-hat-cowboy"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Super Mario</h3>
+                                <p class="game-desc">Play the legendary Super Mario Bros platformer right in your browser!</p>
+                                <a href="https://supermario-game.com/" class="game-play-btn" target="_blank">
+                                    <i class="fas fa-external-link-alt game-icon"></i> Play Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="games-page" id="external-page-2">
+                    <div class="games-grid">
+                        <div class="game-card">
+                            <div class="game-tag">External</div>
+                            <div class="game-thumb">
+                                <i class="fas fa-pacman"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Pac-Man</h3>
+                                <p class="game-desc">The classic arcade game where you eat dots and avoid ghosts.</p>
+                                <a href="https://www.pacman.com/" class="game-play-btn" target="_blank">
+                                    <i class="fas fa-external-link-alt game-icon"></i> Play Now
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card">
+                            <div class="game-tag">External</div>
+                            <div class="game-thumb">
+                                <i class="fas fa-chess-board"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Chess.com</h3>
+                                <p class="game-desc">Play chess against players from around the world.</p>
+                                <a href="https://www.chess.com/" class="game-play-btn" target="_blank">
+                                    <i class="fas fa-external-link-alt game-icon"></i> Play Now
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card">
+                            <div class="game-tag">External</div>
+                            <div class="game-thumb">
+                                <i class="fas fa-dice"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Yahtzee</h3>
+                                <p class="game-desc">Classic dice game of chance and strategy.</p>
+                                <a href="https://www.yahtzee.com/" class="game-play-btn" target="_blank">
+                                    <i class="fas fa-external-link-alt game-icon"></i> Play Now
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="game-card">
+                            <div class="game-tag">External</div>
+                            <div class="game-thumb">
+                                <i class="fas fa-puzzle-piece"></i>
+                            </div>
+                            <div class="game-content">
+                                <h3 class="game-title">Jigsaw Puzzles</h3>
+                                <p class="game-desc">Thousands of free online jigsaw puzzles.</p>
+                                <a href="https://www.jigsawplanet.com/" class="game-play-btn" target="_blank">
+                                    <i class="fas fa-external-link-alt game-icon"></i> Play Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pagination">
+                    <button class="page-btn prev-btn" data-page="external">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="page-indicator">
+                        <span id="external-current">1</span>
+                        <span>of</span>
+                        <span id="external-total">2</span>
+                    </div>
+                    <button class="page-btn next-btn" data-page="external">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="container" id="about">
+        <h2 class="section-title">About GameHub</h2>
+        
+        <div class="game-info">
+            <p>GameHub is your one-stop destination for playing the best web games directly in your browser. We've curated a collection of the most popular and entertaining games available online.</p>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3><i class="fas fa-lock"></i> Privacy & Security</h3>
+                    <p>We don't store any personal data or track your game activities. All games are loaded directly from their original sources.</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3><i class="fas fa-gamepad"></i> Game Selection</h3>
+                    <p>We carefully select games that are fun, safe to play, and suitable for all ages. New games are added regularly.</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Technical Notes</h3>
+                    <p>Some games require direct access to their original websites. For these, we provide direct links with clear indicators.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-main">
+                    <p>GameHub - Play All Games in One Place</p>
+                </div>
+                            <div class="footer-links">
+                <a href="categories.html">游戏分类</a>
+                <span class="separator">|</span>
+                <a href="guides.html">游戏攻略</a>
+                <span class="separator">|</span>
+                <a href="reviews.html">用户评论</a>
+                <span class="separator">|</span>
+                <a href="about.html">关于我们</a>
+                <span class="separator">|</span>
+                <a href="contact.html">联系我们</a>
+                <span class="separator">|</span>
+                <a href="sitemap.html">网站地图</a>
+                <span class="separator">|</span>
+                <a href="terms.html">服务条款</a>
+                <span class="separator">|</span>
+                <a href="privacy.html">隐私政策</a>
+            </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 GameHub. All rights reserved. | All game content belongs to their respective owners.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Game data for each game
+        const gamesData = {
+            'poor-bunny': {
+                title: 'Poor Bunny',
+                desc: 'Help the adorable bunny escape danger in this fast-paced running adventure!',
+                url: 'https://cpsgames.org/splash/poor-bunny',
+                about: 'About Poor Bunny',
+                details: 'Poor Bunny is a thrilling endless runner game where you take on the role of a cute bunny trying to escape from various dangers. Jump over obstacles, avoid enemies, and collect coins to unlock new characters and power-ups!',
+                instructions: [
+                    '<strong>Tap or click</strong> to make the bunny jump',
+                    'Jump over obstacles and gaps',
+                    'Collect coins for power-ups',
+                    'Avoid enemies and traps',
+                    'Complete daily challenges'
+                ],
+                features: [
+                    'Simple one-touch controls',
+                    'Multiple unlockable characters',
+                    'Power-ups and special abilities',
+                    'Global leaderboards',
+                    'Daily challenges and rewards'
+                ]
+            },
+            'slither': {
+                title: 'Slither.io',
+                desc: 'Grow the longest snake in this multiplayer competition.',
+                url: 'https://slither.io/',
+                about: 'About Slither.io',
+                details: 'Slither.io is a massively multiplayer game where you control a snake and try to grow as long as possible by eating colorful pellets and other players\' remains. Avoid colliding with other snakes!',
+                instructions: [
+                    '<strong>Move your mouse</strong> to control your snake',
+                    'Eat colored pellets to grow longer',
+                    'Trap other snakes to make them crash into you',
+                    'Avoid colliding with other snakes',
+                    'The longer you are, the higher your score'
+                ],
+                features: [
+                    'Massively multiplayer online gameplay',
+                    'Simple mouse controls',
+                    'Colorful and vibrant visuals',
+                    'Global leaderboard',
+                    'Competitive gameplay'
+                ]
+            },
+            'dino': {
+                title: 'Chrome Dino',
+                desc: 'Help the dinosaur jump over cacti in this endless runner.',
+                url: 'https://chromedino.com/',
+                about: 'About Chrome Dino',
+                details: 'Chrome Dino is the hidden game that appears when your Chrome browser has no internet connection. Control the T-Rex and jump over cacti and avoid flying pterodactyls in this endless runner.',
+                instructions: [
+                    '<strong>Press SPACE or UP ARROW</strong> to jump',
+                    'Press DOWN ARROW to duck under obstacles',
+                    'Jump over cacti and flying pterodactyls',
+                    'The game speeds up as you progress',
+                    'See how far you can go!'
+                ],
+                features: [
+                    'Simple keyboard controls',
+                    'Increasing difficulty over time',
+                    'Day and night cycles',
+                    'High score tracking',
+                    'Offline play capability'
+                ]
+            },
+            'tetris': {
+                title: 'Tetris',
+                desc: 'The classic puzzle game that never gets old.',
+                url: 'https://tetris.com/play-tetris',
+                about: 'About Tetris',
+                details: 'Tetris is the iconic tile-matching puzzle game created in 1984. Arrange falling tetrominoes to complete horizontal lines without gaps. The game ends when the blocks stack up to the top of the playing field.',
+                instructions: [
+                    '<strong>Arrow keys</strong> to move and rotate pieces',
+                    'Left/Right arrows to move horizontally',
+                    'Up arrow to rotate pieces',
+                    'Down arrow to speed up falling',
+                    'Complete lines to earn points'
+                ],
+                features: [
+                    'Classic Tetris gameplay',
+                    'Multiple difficulty levels',
+                    'Modern and retro visual styles',
+                    'Score tracking and level progression',
+                    'Endless gameplay mode'
+                ]
+            },
+            'chess': {
+                title: 'Chess Master',
+                desc: 'Challenge the computer in this classic strategy game.',
+                url: 'https://www.chess.com/play/computer',
+                about: 'About Chess Master',
+                details: 'Chess Master is a digital version of the classic strategy board game. Play against the computer at various difficulty levels, learn strategies, and improve your chess skills.',
+                instructions: [
+                    '<strong>Click and drag</strong> to move pieces',
+                    'Each piece moves in specific ways',
+                    'Protect your king while attacking opponent\'s',
+                    'Use special moves like castling and en passant',
+                    'Checkmate the opponent king to win'
+                ],
+                features: [
+                    'Multiple difficulty levels',
+                    'Tutorials for beginners',
+                    'Move suggestions and hints',
+                    'Analysis of your games',
+                    'Daily puzzles and challenges'
+                ]
+            },
+            'race': {
+                title: 'Race Challenge',
+                desc: 'High-speed racing game with realistic physics.',
+                url: 'https://www.crazygames.com/game/racing',
+                about: 'About Race Challenge',
+                details: 'Race Challenge is a high-speed racing game featuring realistic physics, various tracks, and multiple vehicles. Compete against AI opponents or race against the clock in time trial mode.',
+                instructions: [
+                    '<strong>Arrow keys</strong> to control your vehicle',
+                    'Left/Right arrows to steer',
+                    'Up arrow to accelerate',
+                    'Down arrow to brake/reverse',
+                    'Collect power-ups for advantages'
+                ],
+                features: [
+                    'Multiple tracks and environments',
+                    'Various vehicles with different stats',
+                    'Realistic physics engine',
+                    'Power-ups and special abilities',
+                    'Leaderboards and achievements'
+                ]
+            },
+            'puzzle': {
+                title: 'Jigsaw Puzzle',
+                desc: 'Relaxing puzzle game with beautiful images.',
+                url: 'https://www.jigsawplanet.com/',
+                about: 'About Jigsaw Puzzle',
+                details: 'Jigsaw Puzzle is a relaxing game where you assemble beautiful images from scattered pieces. Choose from thousands of puzzles with varying difficulty levels and piece counts.',
+                instructions: [
+                    '<strong>Drag and drop</strong> pieces to assemble the puzzle',
+                    'Rotate pieces with right-click or rotation button',
+                    'Sort pieces by edge pieces first',
+                    'Group pieces by color or pattern',
+                    'Complete the image to win'
+                ],
+                features: [
+                    'Thousands of beautiful images',
+                    'Adjustable difficulty (piece count)',
+                    'Piece rotation capability',
+                    'Hint system for beginners',
+                    'Save and resume puzzles'
+                ]
+            },
+            'soccer': {
+                title: 'Soccer Stars',
+                desc: 'Score goals and win matches in this football game.',
+                url: 'https://www.crazygames.com/game/soccer-stars',
+                about: 'About Soccer Stars',
+                details: 'Soccer Stars is a fun, physics-based football game where you flick your players to kick the ball and score goals. Play against the computer or challenge friends in multiplayer mode.',
+                instructions: [
+                    '<strong>Drag and release</strong> to flick players',
+                    'Aim for the goal or pass to teammates',
+                    'Manage your energy for powerful shots',
+                    'Defend your goal against opponent attacks',
+                    'Score more goals than your opponent'
+                ],
+                features: [
+                    'Physics-based gameplay',
+                    'Single player and multiplayer modes',
+                    'Team customization options',
+                    'Tournaments and leagues',
+                    'Skill-based progression system'
+                ]
+            },
+            'robot': {
+                title: 'Robot Revolution',
+                desc: 'Build and battle robots in this futuristic strategy game.',
+                url: 'https://www.crazygames.com/game/robot-revolution',
+                about: 'About Robot Revolution',
+                details: 'Robot Revolution is a futuristic strategy game where you design, build, and program robots to battle against opponents. Customize your robots with various weapons and defenses.',
+                instructions: [
+                    '<strong>Design your robot</strong> with different components',
+                    'Program your robot\'s behavior',
+                    'Choose weapons and defenses',
+                    'Battle against AI or other players',
+                    'Earn resources to upgrade your robot'
+                ],
+                features: [
+                    'Extensive robot customization',
+                    'Programming interface for AI behavior',
+                    'Multiple battle arenas',
+                    'Resource collection and management',
+                    'Ranked multiplayer battles'
+                ]
+            },
+            'dragon': {
+                title: 'Dragon Adventure',
+                desc: 'Raise your dragon and explore magical lands.',
+                url: 'https://www.crazygames.com/game/dragon-adventure',
+                about: 'About Dragon Adventure',
+                details: 'Dragon Adventure is a fantasy game where you raise and train your own dragon. Explore magical lands, complete quests, and battle mythical creatures in this enchanting adventure.',
+                instructions: [
+                    '<strong>Care for your dragon</strong> by feeding and training',
+                    'Explore different magical realms',
+                    'Complete quests to earn rewards',
+                    'Battle mythical creatures',
+                    'Unlock new dragon abilities'
+                ],
+                features: [
+                    'Dragon customization and evolution',
+                    'Open world exploration',
+                    'Quest system with storylines',
+                    'Turn-based combat system',
+                    'Magical abilities and spells'
+                ]
+            },
+            'beat': {
+                title: 'Beat Master',
+                desc: 'Rhythm game with the latest chart-topping hits.',
+                url: 'https://www.crazygames.com/game/beat-master',
+                about: 'About Beat Master',
+                details: 'Beat Master is a rhythm game where you tap, swipe, and hold to the beat of popular songs. Test your rhythm skills and compete for high scores on global leaderboards.',
+                instructions: [
+                    '<strong>Tap, swipe, and hold</strong> to the rhythm',
+                    'Follow the on-screen prompts',
+                    'Maintain your combo for higher scores',
+                    'Unlock new songs as you progress',
+                    'Compete on global leaderboards'
+                ],
+                features: [
+                    'Popular chart-topping songs',
+                    'Multiple difficulty levels',
+                    'Customizable controls',
+                    'Global leaderboards',
+                    'Daily challenges and events'
+                ]
+            },
+            'ghost': {
+                title: 'Ghost Hunters',
+                desc: 'Solve mysteries in haunted locations.',
+                url: 'https://www.crazygames.com/game/ghost-hunters',
+                about: 'About Ghost Hunters',
+                details: 'Ghost Hunters is a paranormal investigation game where you explore haunted locations, gather evidence, and solve mysteries. Use specialized equipment to detect and capture ghosts.',
+                instructions: [
+                    '<strong>Explore haunted locations</strong> with your team',
+                    'Use specialized ghost-hunting equipment',
+                    'Gather evidence of paranormal activity',
+                    'Identify the type of ghost',
+                    'Complete investigations successfully'
+                ],
+                features: [
+                    'Realistic ghost-hunting equipment',
+                    'Multiple haunted locations',
+                    'Different types of ghosts with unique behaviors',
+                    'Cooperative multiplayer mode',
+                    'Progression system with upgrades'
+                ]
+            },
+            'ocean': {
+                title: 'Ocean Explorer',
+                desc: 'Discover underwater worlds and marine life.',
+                url: 'https://www.crazygames.com/game/ocean-explorer',
+                about: 'About Ocean Explorer',
+                details: 'Ocean Explorer is an underwater adventure game where you dive into the depths of the ocean, discover marine life, and explore sunken treasures. Learn about ocean ecosystems while having fun.',
+                instructions: [
+                    '<strong>Navigate underwater</strong> with directional controls',
+                    'Collect marine specimens and treasures',
+                    'Avoid dangerous sea creatures',
+                    'Complete research missions',
+                    'Upgrade your diving equipment'
+                ],
+                features: [
+                    'Beautiful underwater environments',
+                    'Diverse marine life',
+                    'Educational content about ocean ecosystems',
+                    'Treasure hunting and collection',
+                    'Equipment upgrades and customization'
+                ]
+            },
+            'space': {
+                title: 'Space Race',
+                desc: 'Build your space empire and explore the galaxy.',
+                url: 'https://www.crazygames.com/game/space-race',
+                about: 'About Space Race',
+                details: 'Space Race is a strategy game set in the cosmos where you build your space empire, colonize planets, research technologies, and compete against other space-faring civilizations.',
+                instructions: [
+                    '<strong>Build and expand</strong> your space empire',
+                    'Colonize planets and extract resources',
+                    'Research new technologies',
+                    'Form alliances or declare war',
+                    'Explore the galaxy for new opportunities'
+                ],
+                features: [
+                    'Galaxy-scale strategy gameplay',
+                    'Planet colonization and management',
+                    'Technology research tree',
+                    'Diplomacy and warfare systems',
+                    'Multiplayer galactic conquest'
+                ]
+            },
+            'royal': {
+                title: 'Royal Challenge',
+                desc: 'Strategy game set in medieval times.',
+                url: 'https://www.crazygames.com/game/royal-challenge',
+                about: 'About Royal Challenge',
+                details: 'Royal Challenge is a medieval strategy game where you build your kingdom, manage resources, train armies, and engage in epic battles. Become the most powerful ruler in the realm.',
+                instructions: [
+                    '<strong>Build and upgrade</strong> your kingdom',
+                    'Manage resources like food, gold, and wood',
+                    'Train different types of military units',
+                    'Form alliances with other players',
+                    'Conquer territories and expand your realm'
+                ],
+                features: [
+                    'Medieval kingdom building',
+                    'Resource management system',
+                    'Army composition and tactics',
+                    'Alliance system with chat',
+                    'Epic castle sieges and battles'
+                ]
+            },
+            'parkour': {
+                title: 'Parkour Masters',
+                desc: 'Navigate urban environments with parkour moves.',
+                url: 'https://www.crazygames.com/game/parkour-masters',
+                about: 'About Parkour Masters',
+                details: 'Parkour Masters is an action game where you navigate urban environments using parkour moves like running, jumping, climbing, and rolling. Complete challenging courses as fast as possible.',
+                instructions: [
+                    '<strong>Use WASD or arrow keys</strong> to move',
+                    'Space to jump, Shift to sprint',
+                    'Time your jumps precisely',
+                    'Chain moves together for combos',
+                    'Complete courses as fast as possible'
+                ],
+                features: [
+                    'Fluid parkour movement system',
+                    'Multiple urban environments',
+                    'Time trial challenges',
+                    'Character customization',
+                    'Leaderboards for each course'
+                ]
+            },
+            'racing': {
+                title: 'Extreme Racing',
+                desc: 'High-speed racing with customizable cars.',
+                url: 'https://www.crazygames.com/game/extreme-racing',
+                about: 'About Extreme Racing',
+                details: 'Extreme Racing is a high-speed racing game featuring customizable cars, challenging tracks, and intense multiplayer competition. Upgrade your vehicle and compete against players worldwide.',
+                instructions: [
+                    '<strong>Use arrow keys</strong> to steer your car',
+                    'Collect power-ups on the track',
+                    'Avoid obstacles and other racers',
+                    'Use nitro boosts strategically',
+                    'Complete laps as fast as possible'
+                ],
+                features: [
+                    'Multiple racing tracks',
+                    'Car customization system',
+                    'Power-ups and nitro boosts',
+                    'Multiplayer racing mode',
+                    'Leaderboards and achievements'
+                ]
+            },
+            'puzzle': {
+                title: 'Magic Puzzle',
+                desc: 'Solve magical puzzles in a fantasy world.',
+                url: 'games/magic-puzzle.html',
+                about: 'About Magic Puzzle',
+                details: 'Magic Puzzle is an original puzzle game set in a fantasy world where you solve magical puzzles to unlock ancient secrets and help the kingdom.',
+                instructions: [
+                    '<strong>Drag and drop</strong> puzzle pieces',
+                    'Match colors and patterns',
+                    'Complete puzzles before time runs out',
+                    'Use magic power-ups',
+                    'Unlock special rewards'
+                ],
+                features: [
+                    'Original puzzle mechanics',
+                    'Fantasy storyline',
+                    '100+ challenging levels',
+                    'Magic power-up system',
+                    'Beautiful fantasy artwork'
+                ]
+            }
+        };
+
+        // 添加新游戏数据
+        gamesData['snake-local'] = {
+            title: '贪吃蛇',
+            desc: '经典的贪吃蛇游戏，挑战你的反应速度',
+            url: 'games/snake.html',
+            about: '关于贪吃蛇',
+            details: '贪吃蛇是一款经典的街机游戏，玩家控制一条蛇在屏幕上移动，吃食物来增长身体，同时避免撞到墙壁或自己的身体。游戏考验玩家的反应速度和策略规划能力。',
+            instructions: [
+                '<strong>方向键或WASD</strong> 控制蛇的移动',
+                '吃到食物会增长并得分',
+                '避免撞到墙壁或自己的身体',
+                '游戏会记录你的最高分',
+                '挑战更长的蛇身长度'
+            ],
+            features: [
+                '经典的游戏玩法',
+                '流畅的控制体验',
+                '最高分记录',
+                '简洁的界面设计',
+                '适合所有年龄段'
+            ]
+        };
+
+        gamesData['2048-local'] = {
+            title: '2048',
+            desc: '数字合并益智游戏，挑战你的逻辑思维',
+            url: 'games/2048.html',
+            about: '关于2048',
+            details: '2048是一款数字益智游戏，玩家通过滑动方块来合并相同数字，目标是创造出2048这个数字。游戏考验玩家的逻辑思维和策略规划能力。',
+            instructions: [
+                '<strong>方向键</strong> 移动所有方块',
+                '相同数字的方块会合并',
+                '每次移动后会出现新的方块',
+                '目标是创造出2048方块',
+                '方块填满且无法移动时游戏结束'
+            ],
+            features: [
+                '简单易学的规则',
+                '无限的游戏可能性',
+                '最高分记录系统',
+                '流畅的动画效果',
+                '支持触摸和键盘操作'
+            ]
+        };
+
+        gamesData['memory-local'] = {
+            title: '记忆翻牌',
+            desc: '锻炼记忆力的翻牌配对游戏',
+            url: 'games/memory.html',
+            about: '关于记忆翻牌',
+            details: '记忆翻牌是一款锻炼记忆力的益智游戏，玩家需要翻开卡片找到相同的图案进行配对。游戏考验玩家的记忆力和观察力。',
+            instructions: [
+                '<strong>点击卡片</strong> 翻开查看图案',
+                '记住卡片的位置和图案',
+                '找到相同图案的卡片进行配对',
+                '用最少步数完成所有配对',
+                '挑战更快的完成时间'
+            ],
+            features: [
+                '锻炼记忆力和专注力',
+                '可爱的动物图案',
+                '步数和时间统计',
+                '成就系统',
+                '适合全家一起玩'
+            ]
+        };
+
+        gamesData['tictactoe-local'] = {
+            title: '井字棋',
+            desc: '经典的策略对战游戏',
+            url: 'games/tictactoe.html',
+            about: '关于井字棋',
+            details: '井字棋是一款经典的策略游戏，两名玩家轮流在3x3的格子中放置自己的标记，先连成一条线的玩家获胜。游戏简单易学但充满策略性。',
+            instructions: [
+                '<strong>点击格子</strong> 放置你的标记',
+                '轮流与对手下棋',
+                '先连成一条线的玩家获胜',
+                '可以选择与电脑或朋友对战',
+                '游戏会记录胜负统计'
+            ],
+            features: [
+                '经典的策略游戏',
+                '人机对战模式',
+                '双人对战模式',
+                '胜负统计记录',
+                '简洁的游戏界面'
+            ]
+        };
+
+        // Fullscreen functionality
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const gameFrame = document.querySelector('.game-frame-wrapper');
+        
+        fullscreenBtn.addEventListener('click', () => {
+            toggleFullscreen(gameFrame);
+        });
+        
+        // Toggle fullscreen function
+        function toggleFullscreen(element) {
+            if (!document.fullscreenElement) {
+                if (element.requestFullscreen) {
+                    element.requestFullscreen();
+                } else if (element.mozRequestFullScreen) {
+                    element.mozRequestFullScreen();
+                } else if (element.webkitRequestFullscreen) {
+                    element.webkitRequestFullscreen();
+                } else if (element.msRequestFullscreen) {
+                    element.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+        
+        // Restart functionality
+        const restartBtn = document.getElementById('restart-btn');
+        const iframe = document.querySelector('#game-frame');
+        
+        restartBtn.addEventListener('click', () => {
+            restartIframe(iframe);
+        });
+        
+        // Restart iframe function
+        function restartIframe(iframe) {
+            const currentSrc = iframe.src;
+            iframe.src = '';
+            setTimeout(() => {
+                iframe.src = currentSrc;
+            }, 100);
+        }
+        
+        // Tab functionality
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Hide all tab content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Show the corresponding content
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(`${tabId}-content`).classList.add('active');
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Initialize sound button
+        const soundBtn = document.getElementById('sound-btn');
+        let soundEnabled = true;
+        
+        soundBtn.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            if (soundEnabled) {
+                soundBtn.innerHTML = '<i class="fas fa-volume-up"></i> Sound';
+            } else {
+                soundBtn.innerHTML = '<i class="fas fa-volume-mute"></i> Sound';
+            }
+        });
+        
+        // Pagination functionality
+        const paginationData = {
+            popular: { current: 1, total: 2 },
+            new: { current: 1, total: 2 },
+            external: { current: 1, total: 2 }
+        };
+        
+        // Update page indicator
+        function updatePageIndicator(category) {
+            document.getElementById(`${category}-current`).textContent = paginationData[category].current;
+            document.getElementById(`${category}-total`).textContent = paginationData[category].total;
+        }
+        
+        // Initialize page indicators
+        updatePageIndicator('popular');
+        updatePageIndicator('new');
+        updatePageIndicator('external');
+        
+        // Handle pagination buttons
+        document.querySelectorAll('.prev-btn, .next-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const direction = this.classList.contains('prev-btn') ? -1 : 1;
+                const category = this.getAttribute('data-page');
+                
+                // Calculate new page
+                const newPage = paginationData[category].current + direction;
+                
+                // Validate page range
+                if (newPage >= 1 && newPage <= paginationData[category].total) {
+                    // Hide current page
+                    document.querySelectorAll(`#${category}-content .games-page`).forEach(page => {
+                        page.classList.remove('active');
+                    });
+                    
+                    // Show new page
+                    document.getElementById(`${category}-page-${newPage}`).classList.add('active');
+                    
+                    // Update pagination data
+                    paginationData[category].current = newPage;
+                    updatePageIndicator(category);
+                }
+            });
+        });
+        
+        // Handle games per page selection
+        document.querySelectorAll('.games-per-page select').forEach(select => {
+            select.addEventListener('change', function() {
+                const category = this.id.split('-')[0];
+                const gamesPerPage = parseInt(this.value);
+                
+                // In a real implementation, this would recalculate the number of pages
+                // and
+            });
+        });
+
+        // 绑定所有“Play Now”按钮点击事件
+        document.querySelectorAll('.play-game-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // 获取当前卡片的 data-game 属性
+                const gameCard = this.closest('.game-card');
+                const gameKey = gameCard.getAttribute('data-game');
+                if (!gameKey || !gamesData[gameKey]) return;
+
+                const game = gamesData[gameKey];
+
+                // 检查是否是本地游戏
+                if (gameKey.includes('-local')) {
+                    // 直接跳转到本地游戏页面
+                    window.open(game.url, '_blank');
+                    return;
+                }
+
+                // 切换iframe
+                const iframe = document.getElementById('game-frame');
+                iframe.src = game.url;
+
+                // 更新游戏标题、描述等
+                document.getElementById('current-game-title').textContent = game.title;
+                document.getElementById('current-game-desc').textContent = game.desc;
+                document.getElementById('current-game-about').textContent = game.about;
+                document.getElementById('current-game-details').textContent = game.details;
+
+                // 更新玩法说明
+                const instructionsUl = document.getElementById('current-game-instructions');
+                instructionsUl.innerHTML = '';
+                game.instructions.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = item;
+                    instructionsUl.appendChild(li);
+                });
+
+                // 更新游戏特性
+                const featuresUl = document.getElementById('current-game-features');
+                featuresUl.innerHTML = '';
+                game.features.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    featuresUl.appendChild(li);
+                });
+
+                // 页面滚动到顶部 featured 区域
+                const featuredSection = document.getElementById('featured');
+                window.scrollTo({
+                    top: featuredSection.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

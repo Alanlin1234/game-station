@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>井字棋游戏 - GameHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .game-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .game-info {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .current-player {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            max-width: 300px;
+            margin: 0 auto 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 15px;
+        }
+        
+        .cell {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #333;
+        }
+        
+        .cell:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: scale(1.05);
+        }
+        
+        .cell.x {
+            color: #f44336;
+        }
+        
+        .cell.o {
+            color: #2196F3;
+        }
+        
+        .cell.winning {
+            background: rgba(76, 175, 80, 0.8);
+            color: white;
+        }
+        
+        .controls {
+            margin-top: 1rem;
+        }
+        
+        .btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        .btn-mode {
+            background: #2196F3;
+        }
+        
+        .btn-mode:hover {
+            background: #1976D2;
+        }
+        
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            margin: 1rem 0;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+        
+        .score-item {
+            text-align: center;
+        }
+        
+        .score-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .score-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .instructions {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            max-width: 300px;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .game-message {
+            margin: 1rem 0;
+            font-size: 1.1rem;
+            font-weight: bold;
+            min-height: 1.5rem;
+        }
+        
+        .win-message {
+            color: #4CAF50;
+        }
+        
+        .draw-message {
+            color: #FF9800;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-btn">← 返回首页</a>
+    
+    <div class="game-container">
+        <h1>⭕ 井字棋</h1>
+        
+        <div class="score-board">
+            <div class="score-item">
+                <div class="score-label">玩家 X</div>
+                <div class="score-value" id="scoreX">0</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">平局</div>
+                <div class="score-value" id="scoreDraw">0</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">玩家 O</div>
+                <div class="score-value" id="scoreO">0</div>
+            </div>
+        </div>
+        
+        <div class="game-info">
+            当前玩家: <span class="current-player" id="currentPlayer">X</span>
+        </div>
+        
+        <div class="game-message" id="gameMessage"></div>
+        
+        <div class="game-board" id="gameBoard">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn" onclick="resetGame()">重新开始</button>
+            <button class="btn btn-mode" onclick="toggleMode()" id="modeBtn">vs 电脑</button>
+            <button class="btn" onclick="resetScore()">重置分数</button>
+        </div>
+        
+        <div class="instructions">
+            点击格子放置你的标记<br>
+            先连成一条线的玩家获胜！
+        </div>
+    </div>
+
+    <script>
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let currentPlayer = 'X';
+        let gameActive = true;
+        let vsComputer = false;
+        let scores = {
+            X: parseInt(localStorage.getItem('ticTacToeScoreX')) || 0,
+            O: parseInt(localStorage.getItem('ticTacToeScoreO')) || 0,
+            draw: parseInt(localStorage.getItem('ticTacToeScoreDraw')) || 0
+        };
+
+        const winningConditions = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        function initGame() {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                cell.addEventListener('click', handleCellClick);
+            });
+            updateScoreDisplay();
+        }
+
+        function handleCellClick(event) {
+            const cell = event.target;
+            const index = parseInt(cell.dataset.index);
+
+            if (board[index] !== '' || !gameActive) {
+                return;
+            }
+
+            makeMove(index, currentPlayer);
+
+            if (gameActive && vsComputer && currentPlayer === 'O') {
+                setTimeout(computerMove, 500);
+            }
+        }
+
+        function makeMove(index, player) {
+            board[index] = player;
+            const cell = document.querySelector(`[data-index="${index}"]`);
+            cell.textContent = player;
+            cell.classList.add(player.toLowerCase());
+
+            if (checkWin()) {
+                gameActive = false;
+                highlightWinningCells();
+                document.getElementById('gameMessage').textContent = `玩家 ${player} 获胜！`;
+                document.getElementById('gameMessage').className = 'game-message win-message';
+                scores[player]++;
+                updateScoreDisplay();
+                saveScores();
+            } else if (board.every(cell => cell !== '')) {
+                gameActive = false;
+                document.getElementById('gameMessage').textContent = '平局！';
+                document.getElementById('gameMessage').className = 'game-message draw-message';
+                scores.draw++;
+                updateScoreDisplay();
+                saveScores();
+            } else {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                document.getElementById('currentPlayer').textContent = currentPlayer;
+            }
+        }
+
+        function computerMove() {
+            if (!gameActive) return;
+
+            // 简单的AI：随机选择空位
+            const emptyCells = board.map((cell, index) => cell === '' ? index : null).filter(val => val !== null);
+            
+            if (emptyCells.length > 0) {
+                const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                makeMove(randomIndex, 'O');
+            }
+        }
+
+        function checkWin() {
+            return winningConditions.some(condition => {
+                const [a, b, c] = condition;
+                return board[a] && board[a] === board[b] && board[a] === board[c];
+            });
+        }
+
+        function highlightWinningCells() {
+            winningConditions.forEach(condition => {
+                const [a, b, c] = condition;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    document.querySelector(`[data-index="${a}"]`).classList.add('winning');
+                    document.querySelector(`[data-index="${b}"]`).classList.add('winning');
+                    document.querySelector(`[data-index="${c}"]`).classList.add('winning');
+                }
+            });
+        }
+
+        function resetGame() {
+            board = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = 'X';
+            gameActive = true;
+            
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                cell.textContent = '';
+                cell.className = 'cell';
+            });
+            
+            document.getElementById('currentPlayer').textContent = currentPlayer;
+            document.getElementById('gameMessage').textContent = '';
+            document.getElementById('gameMessage').className = 'game-message';
+        }
+
+        function toggleMode() {
+            vsComputer = !vsComputer;
+            const modeBtn = document.getElementById('modeBtn');
+            modeBtn.textContent = vsComputer ? 'vs 玩家' : 'vs 电脑';
+            resetGame();
+        }
+
+        function updateScoreDisplay() {
+            document.getElementById('scoreX').textContent = scores.X;
+            document.getElementById('scoreO').textContent = scores.O;
+            document.getElementById('scoreDraw').textContent = scores.draw;
+        }
+
+        function saveScores() {
+            localStorage.setItem('ticTacToeScoreX', scores.X);
+            localStorage.setItem('ticTacToeScoreO', scores.O);
+            localStorage.setItem('ticTacToeScoreDraw', scores.draw);
+        }
+
+        function resetScore() {
+            scores = { X: 0, O: 0, draw: 0 };
+            updateScoreDisplay();
+            saveScores();
+        }
+
+        // 初始化游戏
+        initGame();
+    </script>
+</body>
+</html>
