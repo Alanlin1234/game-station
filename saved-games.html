@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>游戏存档 - GameHub</title>
+    <meta name="description" content="管理您在GameHub上的游戏存档和进度。">
+    <meta name="keywords" content="游戏存档,游戏进度,GameHub账户,在线游戏">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="enhanced-styles.css">
+    <style>
+        .saved-games-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            margin: 3rem auto;
+            overflow: hidden;
+            padding: 2rem;
+        }
+        
+        .saved-games-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .saved-games-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .saved-games-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .saved-games-action {
+            background: var(--light);
+            border: 1px solid var(--gray);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .saved-games-action:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .saved-games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .saved-game-card {
+            background: #f9f7ff;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .saved-game-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .saved-game-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .saved-game-date {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        .saved-game-content {
+            padding: 1.5rem;
+        }
+        
+        .saved-game-info {
+            margin-bottom: 1rem;
+        }
+        
+        .saved-game-progress {
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar-container {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 5px;
+        }
+        
+        .progress-value {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-align: right;
+        }
+        
+        .saved-game-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+        
+        .saved-game-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-load {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-delete {
+            background: #f5f5f5;
+            color: var(--text);
+        }
+        
+        .saved-game-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+        }
+        
+        .no-data i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        .save-game-form {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .btn-cancel {
+            background: #f5f5f5;
+            color: var(--text);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .btn-save {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .saved-games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .saved-games-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-gamepad"></i>
+                    <span>GameHub</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                        <li><a href="index.html#featured"><i class="fas fa-star"></i> 特色游戏</a></li>
+                        <li><a href="index.html#games"><i class="fas fa-dice"></i> 全部游戏</a></li>
+                        <li><a href="categories.html"><i class="fas fa-th-large"></i> 游戏分类</a></li>
+                        <li><a href="guides.html"><i class="fas fa-book"></i> 游戏攻略</a></li>
+                        <li><a href="reviews.html"><i class="fas fa-comments"></i> 游戏评测</a></li>
+                        <li><a href="about.html"><i class="fas fa-info-circle"></i> 关于我们</a></li>
+                        <li id="auth-menu-item">
+                            <!-- 由auth.js动态填充 -->
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Title -->
+    <section class="container">
+        <h1 class="section-title">游戏存档</h1>
+        
+        <div class="saved-games-container">
+            <div class="saved-games-header">
+                <div class="saved-games-title">我的游戏存档</div>
+                <div class="saved-games-actions">
+                    <button class="saved-games-action" id="create-save-btn">
+                        <i class="fas fa-plus"></i> 创建新存档
+                    </button>
+                    <button class="saved-games-action" id="import-save-btn">
+                        <i class="fas fa-file-import"></i> 导入存档
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 创建存档表单 -->
+            <div class="save-game-form" id="save-game-form" style="display: none;">
+                <h3>创建新存档</h3>
+                <form id="create-save-form">
+                    <div class="form-group">
+                        <label for="save-game">选择游戏</label>
+                        <select id="save-game" required>
+                            <option value="">-- 选择游戏 --</option>
+                            <!-- 由JavaScript动态填充 -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="save-name">存档名称</label>
+                        <input type="text" id="save-name" placeholder="输入存档名称" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="save-description">存档描述（可选）</label>
+                        <input type="text" id="save-description" placeholder="输入存档描述">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" id="cancel-save-btn">取消</button>
+                        <button type="submit" class="btn-save">保存</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- 导入存档表单 -->
+            <div class="save-game-form" id="import-save-form" style="display: none;">
+                <h3>导入存档</h3>
+                <form id="import-form">
+                    <div class="form-group">
+                        <label for="import-file">选择存档文件</label>
+                        <input type="file" id="import-file" accept=".json" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" id="cancel-import-btn">取消</button>
+                        <button type="submit" class="btn-save">导入</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- 存档列表 -->
+            <div class="saved-games-grid" id="saved-games-grid">
+                <!-- 由JavaScript动态填充 -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-main">
+                    <p>GameHub - 您的在线游戏平台</p>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">首页</a>
+                    <span class="separator">|</span>
+                    <a href="about.html">关于我们</a>
+                    <span class="separator">|</span>
+                    <a href="contact.html">联系我们</a>
+                    <span class="separator">|</span>
+                    <a href="terms.html">服务条款</a>
+                    <span class="separator">|</span>
+                    <a href="privacy.html">隐私政策</a>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 GameHub. 保留所有权利.
+            </div>
+        </div>
+    </footer>
+
+    <!-- 引入脚本 -->
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查用户是否登录
+            if (!UserAuth.currentUser) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // 获取DOM元素
+            const savedGamesGrid = document.getElementById('saved-games-grid');
+            const createSaveBtn = document.getElementById('create-save-btn');
+            const importSaveBtn = document.getElementById('import-save-btn');
+            const saveGameForm = document.getElementById('save-game-form');
+            const importSaveForm = document.getElementById('import-save-form');
+            const cancelSaveBtn = document.getElementById('cancel-save-btn');
+            const cancelImportBtn = document.getElementById('cancel-import-btn');
+            const saveGameSelect = document.getElementById('save-game');
+            
+            // 加载游戏列表
+            loadGameList();
+            
+            // 加载存档列表
+            loadSavedGames();
+            
+            // 创建存档按钮点击事件
+            createSaveBtn.addEventListener('click', function() {
+                saveGameForm.style.display = 'block';
+                importSaveForm.style.display = 'none';
+            });
+            
+            // 导入存档按钮点击事件
+            importSaveBtn.addEventListener('click', function() {
+                importSaveForm.style.display = 'block';
+                saveGameForm.style.display = 'none';
+            });
+            
+            // 取消创建存档按钮点击事件
+            cancelSaveBtn.addEventListener('click', function() {
+                saveGameForm.style.display = 'none';
+            });
+            
+            // 取消导入存档按钮点击事件
+            cancelImportBtn.addEventListener('click', function() {
+                importSaveForm.style.display = 'none';
+            });
+            
+            // 创建存档表单提交事件
+            document.getElementById('create-save-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const gameKey = saveGameSelect.value;
+                const saveName = document.getElementById('save-name').value.trim();
+                const saveDescription = document.getElementById('save-description').value.trim();
+                
+                if (!gameKey || !saveName) {
+                    alert('请选择游戏并输入存档名称');
+                    return;
+                }
+                
+                // 创建存档
+                createSaveGame(gameKey, saveName, saveDescription);
+                
+                // 隐藏表单
+                saveGameForm.style.display = 'none';
+                
+                // 重置表单
+                this.reset();
+            });
+            
+            // 导入存档表单提交事件
+            document.getElementById('import-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const fileInput = document.getElementById('import-file');
+                const file = fileInput.files[0];
+                
+                if (!file) {
+                    alert('请选择存档文件');
+                    return;
+                }
+                
+                // 读取文件
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const saveData = JSON.parse(e.target.result);
+                        importSaveGame(saveData);
+                        
+                        // 隐藏表单
+                        importSaveForm.style.display = 'none';
+                        
+                        // 重置表单
+                        document.getElementById('import-form').reset();
+                    } catch (err) {
+                        alert('无效的存档文件');
+                        console.error('Import error:', err);
+                    }
+                };
+                reader.readAsText(file);
+            });
+        });
+        
+        // 加载游戏列表
+        function loadGameList() {
+            const saveGameSelect = document.getElementById('save-game');
+            
+            // 清空现有选项
+            saveGameSelect.innerHTML = '<option value="">-- 选择游戏 --</option>';
+            
+            // 获取所有游戏卡片
+            const gameCards = document.querySelectorAll('.game-card');
+            
+            // 如果没有游戏卡片，可能是因为在存档页面无法访问首页的DOM
+            // 这里使用一些预定义的游戏
+            if (gameCards.length === 0) {
+                const defaultGames = [
+                    { key: 'snake-local', title: '贪吃蛇' },
+                    { key: '2048-local', title: '2048' },
+                    { key: 'memory-local', title: '记忆翻牌' },
+                    { key: 'tictactoe-local', title: '井字棋' },
+                    { key: 'tetris', title: '俄罗斯方块' }
+                ];
+                
+                defaultGames.forEach(game => {
+                    const option = document.createElement('option');
+                    option.value = game.key;
+                    option.textContent = game.title;
+                    saveGameSelect.appendChild(option);
+                });
+            } else {
+                // 添加游戏选项
+                gameCards.forEach(card => {
+                    const gameKey = card.getAttribute('data-game');
+                    if (!gameKey) return;
+                    
+                    const gameTitle = card.querySelector('.game-title').textContent;
+                    
+                    const option = document.createElement('option');
+                    option.value = gameKey;
+                    option.textContent = gameTitle;
+                    saveGameSelect.appendChild(option);
+                });
+            }
+        }
+        
+        // 加载存档列表
+        function loadSavedGames() {
+            const savedGamesGrid = document.getElementById('saved-games-grid');
+            
+            // 获取用户存档
+            getUserSavedGames().then(savedGames => {
+                // 清空现有内容
+                savedGamesGrid.innerHTML = '';
+                
+                // 检查是否有存档
+                if (Object.keys(savedGames).length === 0) {
+                    savedGamesGrid.innerHTML = `
+                        <div class="no-data">
+                            <i class="fas fa-save"></i>
+                            <p>暂无游戏存档</p>
+                            <p>创建新存档或导入存档文件</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // 添加存档卡片
+                Object.entries(savedGames).forEach(([saveId, saveData]) => {
+                    const saveCard = document.createElement('div');
+                    saveCard.className = 'saved-game-card';
+                    
+                    // 格式化日期
+                    const date = new Date(saveData.createdAt);
+                    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+                    
+                    saveCard.innerHTML = `
+                        <div class="saved-game-header">
+                            <div class="saved-game-title">${saveData.name}</div>
+                            <div class="saved-game-date">${formattedDate}</div>
+                        </div>
+                        <div class="saved-game-content">
+                            <div class="saved-game-info">
+                                <strong>游戏：</strong> ${saveData.gameTitle || saveData.gameKey}
+                            </div>
+                            ${saveData.description ? `<div class="saved-game-info"><strong>描述：</strong> ${saveData.description}</div>` : ''}
+                            <div class="saved-game-progress">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" style="width: ${saveData.progress || 0}%"></div>
+                                </div>
+                                <div class="progress-value">${saveData.progress || 0}%</div>
+                            </div>
+                            <div class="saved-game-actions">
+                                <button class="saved-game-btn btn-load" data-save-id="${saveId}">
+                                    <i class="fas fa-play"></i> 加载
+                                </button>
+                                <button class="saved-game-btn btn-delete" data-save-id="${saveId}">
+                                    <i class="fas fa-trash"></i> 删除
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    savedGamesGrid.appendChild(saveCard);
+                });
+                
+                // 绑定加载按钮事件
+                document.querySelectorAll('.btn-load').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const saveId = this.getAttribute('data-save-id');
+                        loadSaveGame(saveId);
+                    });
+                });
+                
+                // 绑定删除按钮事件
+                document.querySelectorAll('.btn-delete').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const saveId = this.getAttribute('data-save-id');
+                        if (confirm('确定要删除此存档吗？此操作无法撤销。')) {
+                            deleteSaveGame(saveId);
+                        }
+                    });
+                });
+            });
+        }
+        
+        // 获取用户存档
+        function getUserSavedGames() {
+            return new Promise((resolve) => {
+                if (!UserAuth.currentUser) {
+                    resolve({});
+                    return;
+                }
+                
+                // 从本地存储获取
+                const savedGames = JSON.parse(localStorage.getItem('gamehub_saved_games_' + UserAuth.currentUser.id)) || {};
+                resolve(savedGames);
+            });
+        }
+        
+        // 创建存档
+        function createSaveGame(gameKey, name, description = '') {
+            // 获取游戏标题
+            const saveGameSelect = document.getElementById('save-game');
+            const gameTitle = saveGameSelect.options[saveGameSelect.selectedIndex].text;
+            
+            // 创建存档ID
+            const saveId = Date.now().toString();
+            
+            // 创建存档数据
+            const saveData = {
+                id: saveId,
+                gameKey,
+                gameTitle,
+                name,
+                description,
+                progress: Math.floor(Math.random() * 100), // 模拟进度
+                data: {}, // 实际游戏数据
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+            
+            // 获取现有存档
+            getUserSavedGames().then(savedGames => {
+                // 添加新存档
+                savedGames[saveId] = saveData;
+                
+                // 保存到本地存储
+                localStorage.setItem('gamehub_saved_games_' + UserAuth.currentUser.id, JSON.stringify(savedGames));
+                
+                // 重新加载存档列表
+                loadSavedGames();
+                
+                // 显示成功消息
+                UserAuth.showNotification('存档已创建', '游戏存档已成功创建', 'success');
+            });
+        }
+        
+        // 导入存档
+        function importSaveGame(saveData) {
+            // 验证存档数据
+            if (!saveData.gameKey || !saveData.name) {
+                alert('无效的存档数据');
+                return;
+            }
+            
+            // 创建存档ID
+            const saveId = Date.now().toString();
+            
+            // 添加必要字段
+            saveData.id = saveId;
+            saveData.createdAt = saveData.createdAt || new Date().toISOString();
+            saveData.updatedAt = new Date().toISOString();
+            
+            // 获取现有存档
+            getUserSavedGames().then(savedGames => {
+                // 添加导入的存档
+                savedGames[saveId] = saveData;
+                
+                // 保存到本地存储
+                localStorage.setItem('gamehub_saved_games_' + UserAuth.currentUser.id, JSON.stringify(savedGames));
+                
+                // 重新加载存档列表
+                loadSavedGames();
+                
+                // 显示成功消息
+                UserAuth.showNotification('存档已导入', '游戏存档已成功导入', 'success');
+            });
+        }
+        
+        // 加载存档
+        function loadSaveGame(saveId) {
+            // 获取存档数据
+            getUserSavedGames().then(savedGames => {
+                const saveData = savedGames[saveId];
+                
+                if (!saveData) {
+                    alert('存档不存在');
+                    return;
+                }
+                
+                // 在实际应用中，这里应该跳转到对应的游戏页面并加载存档数据
+                // 为了演示，我们只显示一个消息
+                UserAuth.showNotification('存档已加载', `正在加载 ${saveData.name}`, 'success');
+                
+                // 模拟跳转到游戏页面
+                setTimeout(() => {
+                    const gameUrl = saveData.gameKey.includes('-local') ? 
+                        `games/${saveData.gameKey.replace('-local', '')}.html` : 
+                        `index.html#featured`;
+                    
+                    // 将存档数据存储到会话存储，以便游戏页面可以访问
+                    sessionStorage.setItem('current_save_data', JSON.stringify(saveData));
+                    
+                    // 跳转到游戏页面
+                    window.location.href = gameUrl;
+                }, 1000);
+            });
+        }
+        
+        // 删除存档
+        function deleteSaveGame(saveId) {
+            // 获取存档数据
+            getUserSavedGames().then(savedGames => {
+                // 删除存档
+                delete savedGames[saveId];
+                
+                // 保存到本地存储
+                localStorage.setItem('gamehub_saved_games_' + UserAuth.currentUser.id, JSON.stringify(savedGames));
+                
+                // 重新加载存档列表
+                loadSavedGames();
+                
+                // 显示成功消息
+                UserAuth.showNotification('存档已删除', '游戏存档已成功删除', 'success');
+            });
+        }
+    </script>
+</body>
+</html>

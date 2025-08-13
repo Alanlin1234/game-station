@@ -3,7 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>贪吃蛇游戏 - GameHub</title>
+    <title>贪吃蛇游戏 - 游戏乐园 | 经典休闲游戏</title>
+    <meta name="description" content="在游戏乐园玩经典的贪吃蛇游戏，控制蛇吃食物并成长，挑战高分，与好友分享成绩！各种难度模式等你来挑战。">
+    <meta name="keywords" content="贪吃蛇,在线游戏,小游戏,免费游戏,休闲游戏,经典游戏,高分挑战,排行榜,游戏成就">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../enhanced-styles.css">
+    <!-- Open Graph 标签，用于社交媒体分享 -->
+    <meta property="og:title" content="贪吃蛇游戏 - 游戏乐园 | 经典休闲游戏">
+    <meta property="og:description" content="在游戏乐园玩经典的贪吃蛇游戏，控制蛇吃食物并成长，挑战高分！">
+    <meta property="og:image" content="https://www.youxileyuan.com/images/games/snake-preview.jpg">
+    <meta property="og:url" content="https://www.youxileyuan.com/games/snake.html">
+    <meta property="og:type" content="website">
+    <!-- Twitter 卡片标签 -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="贪吃蛇游戏 - 游戏乐园 | 经典休闲游戏">
+    <meta name="twitter:description" content="在游戏乐园玩经典的贪吃蛇游戏，控制蛇吃食物并成长，挑战高分！">
+    <meta name="twitter:image" content="https://www.youxileyuan.com/images/games/snake-preview.jpg">
     <style>
         * {
             margin: 0;
@@ -14,11 +30,9 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
             color: white;
+            padding-bottom: 2rem;
         }
         
         .game-container {
@@ -28,6 +42,7 @@
             border-radius: 20px;
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
         }
         
         h1 {
@@ -48,13 +63,14 @@
             border-radius: 10px;
             background: #000;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            max-width: 100%;
         }
         
         .controls {
             margin-top: 1rem;
         }
         
-        .btn {
+        .game-btn {
             background: #ff6b6b;
             color: white;
             border: none;
@@ -67,7 +83,7 @@
             transition: all 0.3s ease;
         }
         
-        .btn:hover {
+        .game-btn:hover {
             background: #ff5252;
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
@@ -80,213 +96,1231 @@
         }
         
         .back-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
             background: rgba(255, 255, 255, 0.2);
             color: white;
             text-decoration: none;
             padding: 0.5rem 1rem;
             border-radius: 25px;
             transition: all 0.3s ease;
+            display: inline-block;
+            margin-bottom: 1rem;
         }
         
         .back-btn:hover {
             background: rgba(255, 255, 255, 0.3);
         }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: bold;
+            padding: 1rem 1.5rem;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .social-share-btn {
+            padding: 0.5rem 1rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .rating-stars {
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .rating-stars i {
+            margin-right: 0.2rem;
+        }
+        
+        .rating-stars i:hover {
+            color: #ffc107;
+        }
+        
+        .rating-stars i.active {
+            color: #ffc107;
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+        
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .achievement-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        .achievement-icon.unlocked {
+            background: #ffc107;
+            color: #000;
+        }
+        
+        .achievement-icon.locked {
+            background: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .recommended-game {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .recommended-game:last-child {
+            border-bottom: none;
+        }
+        
+        .recommended-game img {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-right: 1rem;
+        }
+        
+        .difficulty-selector {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 0.3rem 0.7rem;
+        }
+        
+        .nav-tabs {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .nav-tabs .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            border: none;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+        }
+        
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .game-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+                margin: 0 0.3rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <a href="../index.html" class="back-btn">← 返回首页</a>
-    
-    <div class="game-container">
-        <h1>🐍 贪吃蛇</h1>
-        <div class="game-info">
-            <div>得分: <span id="score">0</span></div>
-            <div>最高分: <span id="highScore">0</span></div>
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <a href="../index.html" class="back-btn">
+                <i class="bi bi-arrow-left"></i> 返回首页
+            </a>
+            <div>
+                <span class="badge bg-warning text-dark me-2">热门游戏</span>
+                <span>难度: 
+                    <select id="difficultyLevel" class="difficulty-selector">
+                        <option value="easy">简单</option>
+                        <option value="medium" selected>中等</option>
+                        <option value="hard">困难</option>
+                        <option value="expert">专家</option>
+                    </select>
+                </span>
+            </div>
         </div>
-        <canvas id="gameCanvas" width="400" height="400"></canvas>
-        <div class="controls">
-            <button class="btn" onclick="startGame()">开始游戏</button>
-            <button class="btn" onclick="pauseGame()">暂停</button>
-            <button class="btn" onclick="resetGame()">重新开始</button>
-        </div>
-        <div class="instructions">
-            使用方向键或WASD控制蛇的移动<br>
-            吃到食物会增长并得分，撞到墙壁或自己会游戏结束
+        
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="game-container">
+                    <h1>🐍 贪吃蛇</h1>
+                    <div class="game-info">
+                        <div>得分: <span id="score">0</span></div>
+                        <div>最高分: <span id="highScore">0</span></div>
+                    </div>
+                    <canvas id="gameCanvas" width="400" height="400"></canvas>
+                    <div class="controls">
+                        <button class="game-btn" id="startBtn">开始游戏</button>
+                        <button class="game-btn" id="pauseBtn">暂停</button>
+                        <button class="game-btn" id="resetBtn">重新开始</button>
+                    </div>
+                    <div class="instructions">
+                        使用方向键或WASD控制蛇的移动<br>
+                        吃到食物会增长并得分，撞到墙壁或自己会游戏结束<br>
+                        <span class="text-warning">提示：</span> 特殊食物（金色）会给你额外分数，但会很快消失！
+                    </div>
+                </div>
+                
+                <!-- 社交分享和评分区域 -->
+                <div class="card">
+                    <div class="card-header">
+                        分享和评分
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <h6>分享这个游戏:</h6>
+                                <div class="mt-2">
+                                    <button class="btn btn-primary social-share-btn" onclick="shareGame('facebook')">
+                                        <i class="bi bi-facebook"></i> Facebook
+                                    </button>
+                                    <button class="btn btn-info social-share-btn" onclick="shareGame('twitter')">
+                                        <i class="bi bi-twitter"></i> Twitter
+                                    </button>
+                                    <button class="btn btn-success social-share-btn" onclick="shareGame('wechat')">
+                                        <i class="bi bi-wechat"></i> 微信
+                                    </button>
+                                    <button class="btn btn-danger social-share-btn" onclick="shareGame('weibo')">
+                                        <i class="bi bi-sina-weibo"></i> 微博
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>为这个游戏评分:</h6>
+                                <div class="rating-stars mt-2" id="gameRating">
+                                    <i class="bi bi-star" data-rating="1"></i>
+                                    <i class="bi bi-star" data-rating="2"></i>
+                                    <i class="bi bi-star" data-rating="3"></i>
+                                    <i class="bi bi-star" data-rating="4"></i>
+                                    <i class="bi bi-star" data-rating="5"></i>
+                                    <span class="ms-2" id="ratingValue">未评分</span>
+                                </div>
+                                <div class="mt-2">
+                                    <small>已有 <span id="ratingCount">0</span> 人评分</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 评论区 -->
+                <div class="card">
+                    <div class="card-header">
+                        游戏评论
+                    </div>
+                    <div class="card-body">
+                        <form id="commentForm">
+                            <div class="mb-3">
+                                <textarea class="form-control" id="commentText" rows="3" placeholder="分享你的游戏体验..." style="background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.2);"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">提交评论</button>
+                        </form>
+                        <hr style="border-color: rgba(255, 255, 255, 0.2);">
+                        <div id="commentsContainer">
+                            <!-- 评论将通过JavaScript动态加载 -->
+                            <div class="comment-item">
+                                <div class="d-flex justify-content-between">
+                                    <h6>小明</h6>
+                                    <small>2023-08-10</small>
+                                </div>
+                                <p>这个贪吃蛇游戏太好玩了！我的最高分是120分，有人能超过吗？</p>
+                            </div>
+                            <hr style="border-color: rgba(255, 255, 255, 0.1);">
+                            <div class="comment-item">
+                                <div class="d-flex justify-content-between">
+                                    <h6>小红</h6>
+                                    <small>2023-08-09</small>
+                                </div>
+                                <p>专家难度真的很有挑战性，操作要非常精准才行。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 侧边栏 -->
+            <div class="col-lg-4">
+                <!-- 排行榜 -->
+                <div class="card">
+                    <div class="card-header">
+                        排行榜
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="leaderboardTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="daily-tab" data-bs-toggle="tab" data-bs-target="#daily" type="button" role="tab" aria-controls="daily" aria-selected="true">今日</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="weekly-tab" data-bs-toggle="tab" data-bs-target="#weekly" type="button" role="tab" aria-controls="weekly" aria-selected="false">本周</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="alltime-tab" data-bs-toggle="tab" data-bs-target="#alltime" type="button" role="tab" aria-controls="alltime" aria-selected="false">总榜</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content mt-3" id="leaderboardTabContent">
+                            <div class="tab-pane fade show active" id="daily" role="tabpanel" aria-labelledby="daily-tab">
+                                <div id="dailyLeaderboard">
+                                    <div class="leaderboard-item">
+                                        <div><i class="bi bi-trophy-fill text-warning"></i> 小王</div>
+                                        <div>180分</div>
+                                    </div>
+                                    <div class="leaderboard-item">
+                                        <div><i class="bi bi-trophy-fill text-secondary"></i> 大明</div>
+                                        <div>150分</div>
+                                    </div>
+                                    <div class="leaderboard-item">
+                                        <div><i class="bi bi-trophy-fill" style="color: #cd7f32;"></i> 小李</div>
+                                        <div>120分</div>
+                                    </div>
+                                    <div class="leaderboard-item">
+                                        <div>4. 小张</div>
+                                        <div>100分</div>
+                                    </div>
+                                    <div class="leaderboard-item">
+                                        <div>5. 小红</div>
+                                        <div>90分</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="weekly" role="tabpanel" aria-labelledby="weekly-tab">
+                                <div id="weeklyLeaderboard">
+                                    <div class="leaderboard-item">
+                                        <div><i class="bi bi-trophy-fill text-warning"></i> 大明</div>
+                                        <div>220分</div>
+                                    </div>
+                                    <div class="leaderboard-item">
+                                        <div><i class="bi bi-trophy-fill text-secondary"></i> 小王</div>
+                                        <div>180分</div>
+                                    </div>
+                                    <div class="leaderboard-item">
+                                        <div><i class="bi bi-trophy-fill" style="color: #cd7f32;"></i> 小张</div>
+                                        <div>160分</div>
+                                    </div>
+                                    <div class="leaderboard-item">
+                                        <div>4. 小李</div>
+                                        <div>150分</div>
+                                    </div>
+                                    <div class="leaderboard-item">
+                                        <div>5. 小红</div>
+                                        <div>130分</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="alltime" role="tabpanel" aria-labelledby="alltime-tab">
+                                <div id="alltimeLeaderboard">
+                                    <div class="leaderboard-item">
+                                        <div><i class="bi bi-trophy-fill text-warning"></i> 游戏大师</div>
+                                        <div>350分</div>
+                                    </div>
+                                    <div class="leaderboard-item">
+                                        <div><i class="bi bi-trophy-fill text-secondary"></i> 蛇王</div>
+                                        <div>300分</div>
+                                    </div>
+                                    <div class="leaderboard-item">
+                                        <div><i class="bi bi-trophy-fill" style="color: #cd7f32;"></i> 大明</div>
+                                        <div>250分</div>
+                                    </div>
+                                    <div class="leaderboard-item">
+                                        <div>4. 小王</div>
+                                        <div>220分</div>
+                                    </div>
+                                    <div class="leaderboard-item">
+                                        <div>5. 小张</div>
+                                        <div>200分</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 成就系统 -->
+                <div class="card">
+                    <div class="card-header">
+                        游戏成就
+                    </div>
+                    <div class="card-body">
+                        <div id="achievementsList">
+                            <div class="achievement-item">
+                                <div class="achievement-icon locked" id="achievement-beginner">
+                                    <i class="bi bi-lock"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">新手上路</h6>
+                                    <small class="text-muted">首次得分达到10分</small>
+                                </div>
+                            </div>
+                            <div class="achievement-item">
+                                <div class="achievement-icon locked" id="achievement-intermediate">
+                                    <i class="bi bi-lock"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">小有成就</h6>
+                                    <small class="text-muted">得分达到50分</small>
+                                </div>
+                            </div>
+                            <div class="achievement-item">
+                                <div class="achievement-icon locked" id="achievement-advanced">
+                                    <i class="bi bi-lock"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">蛇王</h6>
+                                    <small class="text-muted">得分达到100分</small>
+                                </div>
+                            </div>
+                            <div class="achievement-item">
+                                <div class="achievement-icon locked" id="achievement-master">
+                                    <i class="bi bi-lock"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">蛇神</h6>
+                                    <small class="text-muted">得分达到200分</small>
+                                </div>
+                            </div>
+                            <div class="achievement-item">
+                                <div class="achievement-icon locked" id="achievement-speed">
+                                    <i class="bi bi-lock"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">闪电蛇</h6>
+                                    <small class="text-muted">在专家难度下获得50分</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 推荐游戏 -->
+                <div class="card">
+                    <div class="card-header">
+                        推荐游戏
+                    </div>
+                    <div class="card-body">
+                        <div id="recommendedGames">
+                            <div class="recommended-game">
+                                <img src="https://picsum.photos/id/1/80/80" class="me-3" alt="2048">
+                                <div>
+                                    <h6 class="mb-1">2048</h6>
+                                    <div class="small">
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-half text-warning"></i>
+                                        <span class="ms-1">4.5</span>
+                                    </div>
+                                    <a href="2048.html" class="btn btn-sm btn-primary mt-1">玩游戏</a>
+                                </div>
+                            </div>
+                            <div class="recommended-game">
+                                <img src="https://picsum.photos/id/20/80/80" class="me-3" alt="记忆配对">
+                                <div>
+                                    <h6 class="mb-1">记忆配对</h6>
+                                    <div class="small">
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star text-warning"></i>
+                                        <span class="ms-1">4.0</span>
+                                    </div>
+                                    <a href="memory.html" class="btn btn-sm btn-primary mt-1">玩游戏</a>
+                                </div>
+                            </div>
+                            <div class="recommended-game">
+                                <img src="https://picsum.photos/id/100/80/80" class="me-3" alt="井字棋">
+                                <div>
+                                    <h6 class="mb-1">井字棋</h6>
+                                    <div class="small">
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-half text-warning"></i>
+                                        <i class="bi bi-star text-warning"></i>
+                                        <span class="ms-1">3.5</span>
+                                    </div>
+                                    <a href="tictactoe.html" class="btn btn-sm btn-primary mt-1">玩游戏</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const scoreElement = document.getElementById('score');
-        const highScoreElement = document.getElementById('highScore');
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            const scoreElement = document.getElementById('score');
+            const highScoreElement = document.getElementById('highScore');
+            const startBtn = document.getElementById('startBtn');
+            const pauseBtn = document.getElementById('pauseBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const difficultySelect = document.getElementById('difficultyLevel');
 
-        const gridSize = 20;
-        const tileCount = canvas.width / gridSize;
+            const gridSize = 20;
+            const tileCount = canvas.width / gridSize;
 
-        let snake = [
-            {x: 10, y: 10}
-        ];
-        let food = {};
-        let dx = 0;
-        let dy = 0;
-        let score = 0;
-        let gameRunning = false;
-        let gameLoop;
+            let snake = [
+                {x: 10, y: 10}
+            ];
+            let food = {};
+            let specialFood = false;
+            let specialFoodTimer = null;
+            let dx = 0;
+            let dy = 0;
+            let score = 0;
+            let gameRunning = false;
+            let gameLoop;
+            let gameSpeed = 150; // 默认速度
+            let difficultyMultiplier = 1; // 难度分数倍数
 
-        // 从localStorage获取最高分
-        let highScore = localStorage.getItem('snakeHighScore') || 0;
-        highScoreElement.textContent = highScore;
-
-        function randomTilePosition() {
-            return Math.floor(Math.random() * tileCount);
-        }
-
-        function generateFood() {
-            food = {
-                x: randomTilePosition(),
-                y: randomTilePosition()
+            // 从localStorage获取最高分
+            let highScore = localStorage.getItem('snakeHighScore') || 0;
+            highScoreElement.textContent = highScore;
+            
+            // 难度设置
+            const difficulties = {
+                easy: { speed: 180, multiplier: 0.8 },
+                medium: { speed: 150, multiplier: 1 },
+                hard: { speed: 120, multiplier: 1.5 },
+                expert: { speed: 90, multiplier: 2 }
             };
-        }
-
-        function drawGame() {
-            // 清空画布
-            ctx.fillStyle = 'black';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // 绘制蛇
-            ctx.fillStyle = '#4CAF50';
-            snake.forEach((segment, index) => {
-                if (index === 0) {
-                    // 蛇头用不同颜色
-                    ctx.fillStyle = '#8BC34A';
-                } else {
-                    ctx.fillStyle = '#4CAF50';
+            
+            difficultySelect.addEventListener('change', function() {
+                const difficulty = difficultySelect.value;
+                gameSpeed = difficulties[difficulty].speed;
+                difficultyMultiplier = difficulties[difficulty].multiplier;
+                
+                if (gameRunning) {
+                    clearInterval(gameLoop);
+                    gameLoop = setInterval(() => {
+                        moveSnake();
+                        drawGame();
+                    }, gameSpeed);
                 }
-                ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize - 2, gridSize - 2);
             });
 
-            // 绘制食物
-            ctx.fillStyle = '#FF5722';
-            ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
-        }
-
-        function moveSnake() {
-            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
-
-            // 检查撞墙
-            if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
-                gameOver();
-                return;
+            function randomTilePosition() {
+                return Math.floor(Math.random() * tileCount);
             }
 
-            // 检查撞到自己
-            if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
-                gameOver();
-                return;
-            }
-
-            snake.unshift(head);
-
-            // 检查是否吃到食物
-            if (head.x === food.x && head.y === food.y) {
-                score += 10;
-                scoreElement.textContent = score;
-                generateFood();
-                
-                // 更新最高分
-                if (score > highScore) {
-                    highScore = score;
-                    highScoreElement.textContent = highScore;
-                    localStorage.setItem('snakeHighScore', highScore);
+            function generateFood() {
+                // 清除特殊食物计时器
+                if (specialFoodTimer) {
+                    clearTimeout(specialFoodTimer);
+                    specialFoodTimer = null;
                 }
-            } else {
-                snake.pop();
+                
+                // 随机决定是否生成特殊食物 (10%概率)
+                specialFood = Math.random() < 0.1;
+                
+                food = {
+                    x: randomTilePosition(),
+                    y: randomTilePosition()
+                };
+                
+                // 确保食物不会出现在蛇身上
+                for (let i = 0; i < snake.length; i++) {
+                    if (food.x === snake[i].x && food.y === snake[i].y) {
+                        generateFood();
+                        return;
+                    }
+                }
+                
+                // 如果是特殊食物，设置计时器
+                if (specialFood) {
+                    specialFoodTimer = setTimeout(() => {
+                        specialFood = false;
+                        generateFood();
+                    }, 5000); // 特殊食物5秒后消失
+                }
             }
-        }
 
-        function gameOver() {
-            gameRunning = false;
-            clearInterval(gameLoop);
-            alert(`游戏结束！得分: ${score}`);
-        }
+            function drawGame() {
+                // 清空画布
+                ctx.fillStyle = 'black';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        function startGame() {
-            if (!gameRunning) {
-                gameRunning = true;
-                gameLoop = setInterval(() => {
-                    moveSnake();
-                    drawGame();
-                }, 150);
+                // 绘制蛇
+                snake.forEach((segment, index) => {
+                    if (index === 0) {
+                        // 蛇头用不同颜色
+                        ctx.fillStyle = '#8BC34A';
+                    } else {
+                        ctx.fillStyle = '#4CAF50';
+                    }
+                    ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize - 2, gridSize - 2);
+                });
+
+                // 绘制食物
+                if (specialFood) {
+                    ctx.fillStyle = '#FFD700'; // 金色特殊食物
+                } else {
+                    ctx.fillStyle = '#FF5722';
+                }
+                ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
             }
-        }
 
-        function pauseGame() {
-            if (gameRunning) {
+            function moveSnake() {
+                const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+
+                // 检查撞墙
+                if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
+                    gameOver();
+                    return;
+                }
+
+                // 检查撞到自己
+                if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
+                    gameOver();
+                    return;
+                }
+
+                snake.unshift(head);
+
+                // 检查是否吃到食物
+                if (head.x === food.x && head.y === food.y) {
+                    // 计算得分 - 特殊食物得分更高
+                    const points = specialFood ? 30 : 10;
+                    score += Math.round(points * difficultyMultiplier);
+                    scoreElement.textContent = score;
+                    
+                    // 检查成就
+                    checkAchievements();
+                    
+                    generateFood();
+                    
+                    // 更新最高分
+                    if (score > highScore) {
+                        highScore = score;
+                        highScoreElement.textContent = highScore;
+                        localStorage.setItem('snakeHighScore', highScore);
+                    }
+                } else {
+                    snake.pop();
+                }
+            }
+
+            function gameOver() {
                 gameRunning = false;
                 clearInterval(gameLoop);
-            } else {
-                startGame();
+                
+                // 保存游戏记录
+                saveGameRecord();
+                
+                // 显示游戏结束消息
+                alert(`游戏结束！得分: ${score}`);
+                
+                // 更新排行榜
+                updateLeaderboard();
             }
-        }
 
-        function resetGame() {
-            gameRunning = false;
-            clearInterval(gameLoop);
-            snake = [{x: 10, y: 10}];
-            dx = 0;
-            dy = 0;
-            score = 0;
-            scoreElement.textContent = score;
-            generateFood();
-            drawGame();
-        }
-
-        // 键盘控制
-        document.addEventListener('keydown', (e) => {
-            if (!gameRunning) return;
-
-            switch(e.key) {
-                case 'ArrowUp':
-                case 'w':
-                case 'W':
-                    if (dy !== 1) {
-                        dx = 0;
-                        dy = -1;
-                    }
-                    break;
-                case 'ArrowDown':
-                case 's':
-                case 'S':
-                    if (dy !== -1) {
-                        dx = 0;
-                        dy = 1;
-                    }
-                    break;
-                case 'ArrowLeft':
-                case 'a':
-                case 'A':
-                    if (dx !== 1) {
-                        dx = -1;
-                        dy = 0;
-                    }
-                    break;
-                case 'ArrowRight':
-                case 'd':
-                case 'D':
-                    if (dx !== -1) {
-                        dx = 1;
-                        dy = 0;
-                    }
-                    break;
+            function startGame() {
+                if (!gameRunning) {
+                    // 重置游戏状态
+                    snake = [{x: 10, y: 10}];
+                    dx = 0;
+                    dy = 0;
+                    score = 0;
+                    scoreElement.textContent = score;
+                    
+                    // 设置游戏速度
+                    const difficulty = difficultySelect.value;
+                    gameSpeed = difficulties[difficulty].speed;
+                    difficultyMultiplier = difficulties[difficulty].multiplier;
+                    
+                    generateFood();
+                    
+                    gameRunning = true;
+                    gameLoop = setInterval(() => {
+                        moveSnake();
+                        drawGame();
+                    }, gameSpeed);
+                    
+                    // 记录游戏开始
+                    trackGameStart();
+                }
             }
+
+            function pauseGame() {
+                if (gameRunning) {
+                    gameRunning = false;
+                    clearInterval(gameLoop);
+                    pauseBtn.textContent = '继续';
+                } else if (snake.length > 0) {
+                    gameRunning = true;
+                    gameLoop = setInterval(() => {
+                        moveSnake();
+                        drawGame();
+                    }, gameSpeed);
+                    pauseBtn.textContent = '暂停';
+                }
+            }
+
+            function resetGame() {
+                gameRunning = false;
+                clearInterval(gameLoop);
+                snake = [{x: 10, y: 10}];
+                dx = 0;
+                dy = 0;
+                score = 0;
+                scoreElement.textContent = score;
+                pauseBtn.textContent = '暂停';
+                generateFood();
+                drawGame();
+            }
+            
+            // 成就系统
+            function checkAchievements() {
+                // 新手上路
+                if (score >= 10) {
+                    unlockAchievement('beginner');
+                }
+                
+                // 小有成就
+                if (score >= 50) {
+                    unlockAchievement('intermediate');
+                }
+                
+                // 蛇王
+                if (score >= 100) {
+                    unlockAchievement('advanced');
+                }
+                
+                // 蛇神
+                if (score >= 200) {
+                    unlockAchievement('master');
+                }
+                
+                // 闪电蛇
+                if (score >= 50 && difficultySelect.value === 'expert') {
+                    unlockAchievement('speed');
+                }
+            }
+            
+            function unlockAchievement(id) {
+                const achievementElement = document.getElementById(`achievement-${id}`);
+                if (achievementElement && achievementElement.classList.contains('locked')) {
+                    achievementElement.classList.remove('locked');
+                    achievementElement.classList.add('unlocked');
+                    achievementElement.innerHTML = '<i class="bi bi-trophy"></i>';
+                    
+                    // 保存成就到本地存储
+                    const achievements = JSON.parse(localStorage.getItem('snakeAchievements') || '[]');
+                    if (!achievements.includes(id)) {
+                        achievements.push(id);
+                        localStorage.setItem('snakeAchievements', JSON.stringify(achievements));
+                        
+                        // 显示成就通知
+                        showAchievementNotification(id);
+                    }
+                }
+            }
+            
+            function showAchievementNotification(id) {
+                const achievementNames = {
+                    'beginner': '新手上路',
+                    'intermediate': '小有成就',
+                    'advanced': '蛇王',
+                    'master': '蛇神',
+                    'speed': '闪电蛇'
+                };
+                
+                const notification = document.createElement('div');
+                notification.className = 'achievement-notification';
+                notification.innerHTML = `
+                    <div class="achievement-notification-content">
+                        <i class="bi bi-trophy-fill text-warning"></i>
+                        <div>
+                            <h6>成就解锁！</h6>
+                            <p>${achievementNames[id]}</p>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // 3秒后移除通知
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 500);
+                }, 3000);
+            }
+            
+            // 排行榜系统
+            function updateLeaderboard() {
+                // 获取当前日期
+                const today = new Date().toISOString().split('T')[0];
+                
+                // 获取排行榜数据
+                const leaderboards = JSON.parse(localStorage.getItem('snakeLeaderboards') || '{"daily":{},"weekly":{},"alltime":[]}');
+                
+                // 更新每日排行榜
+                if (!leaderboards.daily[today]) {
+                    leaderboards.daily[today] = [];
+                }
+                
+                // 添加新的分数记录
+                const playerName = localStorage.getItem('playerName') || '游客' + Math.floor(Math.random() * 1000);
+                const newRecord = {
+                    name: playerName,
+                    score: score,
+                    difficulty: difficultySelect.value,
+                    date: new Date().toISOString()
+                };
+                
+                // 更新每日排行榜
+                leaderboards.daily[today].push(newRecord);
+                leaderboards.daily[today].sort((a, b) => b.score - a.score);
+                leaderboards.daily[today] = leaderboards.daily[today].slice(0, 10); // 只保留前10名
+                
+                // 更新每周排行榜
+                const currentWeek = getWeekNumber(new Date());
+                if (!leaderboards.weekly[currentWeek]) {
+                    leaderboards.weekly[currentWeek] = [];
+                }
+                leaderboards.weekly[currentWeek].push(newRecord);
+                leaderboards.weekly[currentWeek].sort((a, b) => b.score - a.score);
+                leaderboards.weekly[currentWeek] = leaderboards.weekly[currentWeek].slice(0, 10);
+                
+                // 更新总排行榜
+                leaderboards.alltime.push(newRecord);
+                leaderboards.alltime.sort((a, b) => b.score - a.score);
+                leaderboards.alltime = leaderboards.alltime.slice(0, 10);
+                
+                // 保存排行榜
+                localStorage.setItem('snakeLeaderboards', JSON.stringify(leaderboards));
+                
+                // 刷新排行榜显示
+                displayLeaderboards(leaderboards);
+            }
+            
+            function getWeekNumber(date) {
+                const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+                const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
+                return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+            }
+            
+            function displayLeaderboards(leaderboards) {
+                // 显示每日排行榜
+                const today = new Date().toISOString().split('T')[0];
+                const dailyData = leaderboards.daily[today] || [];
+                let dailyHtml = '';
+                
+                if (dailyData.length === 0) {
+                    dailyHtml = '<p class="text-center">今天还没有记录</p>';
+                } else {
+                    dailyData.forEach((record, index) => {
+                        let prefix = `${index + 1}. `;
+                        if (index === 0) prefix = '<i class="bi bi-trophy-fill text-warning"></i> ';
+                        else if (index === 1) prefix = '<i class="bi bi-trophy-fill text-secondary"></i> ';
+                        else if (index === 2) prefix = '<i class="bi bi-trophy-fill" style="color: #cd7f32;"></i> ';
+                        
+                        dailyHtml += `
+                            <div class="leaderboard-item">
+                                <div>${prefix}${record.name}</div>
+                                <div>${record.score}分</div>
+                            </div>
+                        `;
+                    });
+                }
+                document.getElementById('dailyLeaderboard').innerHTML = dailyHtml;
+                
+                // 显示每周排行榜
+                const currentWeek = getWeekNumber(new Date());
+                const weeklyData = leaderboards.weekly[currentWeek] || [];
+                let weeklyHtml = '';
+                
+                if (weeklyData.length === 0) {
+                    weeklyHtml = '<p class="text-center">本周还没有记录</p>';
+                } else {
+                    weeklyData.forEach((record, index) => {
+                        let prefix = `${index + 1}. `;
+                        if (index === 0) prefix = '<i class="bi bi-trophy-fill text-warning"></i> ';
+                        else if (index === 1) prefix = '<i class="bi bi-trophy-fill text-secondary"></i> ';
+                        else if (index === 2) prefix = '<i class="bi bi-trophy-fill" style="color: #cd7f32;"></i> ';
+                        
+                        weeklyHtml += `
+                            <div class="leaderboard-item">
+                                <div>${prefix}${record.name}</div>
+                                <div>${record.score}分</div>
+                            </div>
+                        `;
+                    });
+                }
+                document.getElementById('weeklyLeaderboard').innerHTML = weeklyHtml;
+                
+                // 显示总排行榜
+                const alltimeData = leaderboards.alltime || [];
+                let alltimeHtml = '';
+                
+                if (alltimeData.length === 0) {
+                    alltimeHtml = '<p class="text-center">还没有记录</p>';
+                } else {
+                    alltimeData.forEach((record, index) => {
+                        let prefix = `${index + 1}. `;
+                        if (index === 0) prefix = '<i class="bi bi-trophy-fill text-warning"></i> ';
+                        else if (index === 1) prefix = '<i class="bi bi-trophy-fill text-secondary"></i> ';
+                        else if (index === 2) prefix = '<i class="bi bi-trophy-fill" style="color: #cd7f32;"></i> ';
+                        
+                        alltimeHtml += `
+                            <div class="leaderboard-item">
+                                <div>${prefix}${record.name}</div>
+                                <div>${record.score}分</div>
+                            </div>
+                        `;
+                    });
+                }
+                document.getElementById('alltimeLeaderboard').innerHTML = alltimeHtml;
+            }
+            
+            // 游戏记录
+            function saveGameRecord() {
+                const gameRecords = JSON.parse(localStorage.getItem('gameRecords') || '[]');
+                
+                gameRecords.push({
+                    game: 'snake',
+                    score: score,
+                    difficulty: difficultySelect.value,
+                    date: new Date().toISOString(),
+                    duration: Math.floor((new Date() - gameStartTime) / 1000) // 游戏时长（秒）
+                });
+                
+                // 只保留最近的50条记录
+                if (gameRecords.length > 50) {
+                    gameRecords.shift();
+                }
+                
+                localStorage.setItem('gameRecords', JSON.stringify(gameRecords));
+            }
+            
+            // 分析跟踪
+            function trackGameStart() {
+                gameStartTime = new Date();
+                
+                // 如果有分析API，可以发送游戏开始事件
+                if (window.gameAnalytics) {
+                    window.gameAnalytics.trackEvent('game_start', {
+                        game: 'snake',
+                        difficulty: difficultySelect.value
+                    });
+                }
+            }
+            
+            // 社交分享
+            function shareGame(platform) {
+                const shareText = `我在游戏乐园的贪吃蛇游戏中获得了${score}分！快来挑战我吧！`;
+                const shareUrl = window.location.href;
+                
+                let shareLink = '';
+                
+                switch(platform) {
+                    case 'facebook':
+                        shareLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`;
+                        break;
+                    case 'twitter':
+                        shareLink = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+                        break;
+                    case 'wechat':
+                        // 微信分享通常需要使用微信SDK
+                        alert('请使用微信扫描二维码分享');
+                        return;
+                    case 'weibo':
+                        shareLink = `http://service.weibo.com/share/share.php?url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(shareText)}`;
+                        break;
+                }
+                
+                if (shareLink) {
+                    window.open(shareLink, '_blank');
+                }
+            }
+            
+            // 评分系统
+            const ratingStars = document.querySelectorAll('.rating-stars i');
+            ratingStars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const rating = parseInt(this.getAttribute('data-rating'));
+                    setRating(rating);
+                });
+                
+                star.addEventListener('mouseover', function() {
+                    const rating = parseInt(this.getAttribute('data-rating'));
+                    highlightStars(rating);
+                });
+                
+                star.addEventListener('mouseout', function() {
+                    const currentRating = parseInt(localStorage.getItem('snakeRating') || '0');
+                    highlightStars(currentRating);
+                });
+            });
+            
+            function setRating(rating) {
+                localStorage.setItem('snakeRating', rating);
+                highlightStars(rating);
+                document.getElementById('ratingValue').textContent = `${rating}/5`;
+                
+                // 更新评分计数
+                let ratingCount = parseInt(localStorage.getItem('snakeRatingCount') || '0');
+                ratingCount++;
+                localStorage.setItem('snakeRatingCount', ratingCount);
+                document.getElementById('ratingCount').textContent = ratingCount;
+                
+                // 如果有API，可以发送评分到服务器
+            }
+            
+            function highlightStars(rating) {
+                ratingStars.forEach(star => {
+                    const starRating = parseInt(star.getAttribute('data-rating'));
+                    if (starRating <= rating) {
+                        star.classList.remove('bi-star');
+                        star.classList.add('bi-star-fill');
+                        star.classList.add('active');
+                    } else {
+                        star.classList.remove('bi-star-fill');
+                        star.classList.remove('active');
+                        star.classList.add('bi-star');
+                    }
+                });
+            }
+            
+            // 评论系统
+            const commentForm = document.getElementById('commentForm');
+            commentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const commentText = document.getElementById('commentText').value.trim();
+                if (commentText) {
+                    addComment(commentText);
+                    document.getElementById('commentText').value = '';
+                }
+            });
+            
+            function addComment(text) {
+                const comments = JSON.parse(localStorage.getItem('snakeComments') || '[]');
+                const playerName = localStorage.getItem('playerName') || '游客' + Math.floor(Math.random() * 1000);
+                
+                comments.push({
+                    name: playerName,
+                    text: text,
+                    date: new Date().toISOString()
+                });
+                
+                localStorage.setItem('snakeComments', JSON.stringify(comments));
+                displayComments();
+            }
+            
+            function displayComments() {
+                const comments = JSON.parse(localStorage.getItem('snakeComments') || '[]');
+                const commentsContainer = document.getElementById('commentsContainer');
+                
+                if (comments.length === 0) {
+                    commentsContainer.innerHTML = '<p class="text-center">还没有评论，来发表第一条吧！</p>';
+                    return;
+                }
+                
+                let commentsHtml = '';
+                comments.reverse().forEach(comment => {
+                    const date = new Date(comment.date);
+                    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+                    
+                    commentsHtml += `
+                        <div class="comment-item">
+                            <div class="d-flex justify-content-between">
+                                <h6>${comment.name}</h6>
+                                <small>${formattedDate}</small>
+                            </div>
+                            <p>${comment.text}</p>
+                        </div>
+                        <hr style="border-color: rgba(255, 255, 255, 0.1);">
+                    `;
+                });
+                
+                commentsContainer.innerHTML = commentsHtml;
+            }
+            
+            // 初始化
+            function initGame() {
+                // 加载已解锁的成就
+                const achievements = JSON.parse(localStorage.getItem('snakeAchievements') || '[]');
+                achievements.forEach(id => {
+                    const achievementElement = document.getElementById(`achievement-${id}`);
+                    if (achievementElement) {
+                        achievementElement.classList.remove('locked');
+                        achievementElement.classList.add('unlocked');
+                        achievementElement.innerHTML = '<i class="bi bi-trophy"></i>';
+                    }
+                });
+                
+                // 加载评分
+                const rating = parseInt(localStorage.getItem('snakeRating') || '0');
+                if (rating > 0) {
+                    highlightStars(rating);
+                    document.getElementById('ratingValue').textContent = `${rating}/5`;
+                }
+                
+                // 加载评分计数
+                const ratingCount = parseInt(localStorage.getItem('snakeRatingCount') || '0');
+                document.getElementById('ratingCount').textContent = ratingCount;
+                
+                // 加载评论
+                displayComments();
+                
+                // 加载排行榜
+                const leaderboards = JSON.parse(localStorage.getItem('snakeLeaderboards') || '{"daily":{},"weekly":{},"alltime":[]}');
+                displayLeaderboards(leaderboards);
+                
+                // 绘制初始游戏状态
+                generateFood();
+                drawGame();
+                
+                // 添加CSS样式
+                addStyles();
+            }
+            
+            function addStyles() {
+                const style = document.createElement('style');
+                style.textContent = `
+                    .achievement-notification {
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        background: rgba(255, 215, 0, 0.9);
+                        color: #000;
+                        padding: 15px;
+                        border-radius: 10px;
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                        z-index: 1000;
+                        transition: opacity 0.5s;
+                        display: flex;
+                        align-items: center;
+                    }
+                    
+                    .achievement-notification-content {
+                        display: flex;
+                        align-items: center;
+                    }
+                    
+                    .achievement-notification i {
+                        font-size: 2rem;
+                        margin-right: 10px;
+                    }
+                    
+                    .achievement-notification h6 {
+                        margin: 0;
+                        font-weight: bold;
+                    }
+                    
+                    .achievement-notification p {
+                        margin: 0;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // 键盘控制
+            document.addEventListener('keydown', (e) => {
+                if (!gameRunning) return;
+
+                switch(e.key) {
+                    case 'ArrowUp':
+                    case 'w':
+                    case 'W':
+                        if (dy !== 1) {
+                            dx = 0;
+                            dy = -1;
+                        }
+                        break;
+                    case 'ArrowDown':
+                    case 's':
+                    case 'S':
+                        if (dy !== -1) {
+                            dx = 0;
+                            dy = 1;
+                        }
+                        break;
+                    case 'ArrowLeft':
+                    case 'a':
+                    case 'A':
+                        if (dx !== 1) {
+                            dx = -1;
+                            dy = 0;
+                        }
+                        break;
+                    case 'ArrowRight':
+                    case 'd':
+                    case 'D':
+                        if (dx !== -1) {
+                            dx = 1;
+                            dy = 0;
+                        }
+                        break;
+                    case ' ':
+                        pauseGame();
+                        break;
+                }
+            });
+            
+            // 事件监听器
+            startBtn.addEventListener('click', startGame);
+            pauseBtn.addEventListener('click', pauseGame);
+            resetBtn.addEventListener('click', resetGame);
+            
+            // 游戏开始时间
+            let gameStartTime;
+            
+            // 初始化游戏
+            initGame();
         });
-
-        // 初始化游戏
-        generateFood();
-        drawGame();
     </script>
-</body>
-</html>
+    
+    <style>
+        /* 额外的响应式样式 */
+        @media (max-width: 576px) {
+            .social-share-btn {
+                margin-bottom: 10px;
+                width: 100%;
+            }
+            
+            .game-btn {
+                margin-bottom: 10px;
+                width: 100%;
+            }
+        }
+    </style>

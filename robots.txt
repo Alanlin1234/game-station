@@ -1,28 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /private/
 
-# 网站地图
-Sitemap: http://localhost:3000/sitemap.xml
-
-# 允许搜索引擎访问所有页面
-Allow: /index.html
-Allow: /categories.html
-Allow: /guides.html
-Allow: /reviews.html
-Allow: /games/
-Allow: /about.html
-Allow: /privacy.html
-Allow: /terms.html
-Allow: /contact.html
-Allow: /sitemap.html
-
-# 不允许访问的目录
-Disallow: /node_modules/
-Disallow: /routes/
-Disallow: /middleware/
-Disallow: /.git/
-Disallow: /package.json
-Disallow: /server.js
-
-# 爬取延迟（毫秒）
-Crawl-delay: 1
+Sitemap: https://www.youxileyuan.com/sitemap.xml

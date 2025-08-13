@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的成就 - GameHub</title>
+    <meta name="description" content="查看您在GameHub上解锁的游戏成就和奖杯。">
+    <meta name="keywords" content="游戏成就,游戏奖杯,GameHub账户,游戏成就系统">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="enhanced-styles.css">
+    <style>
+        .achievements-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            margin: 3rem auto;
+            overflow: hidden;
+            padding: 2rem;
+        }
+        
+        .achievements-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .achievements-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .achievements-stats {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .achievement-stat {
+            background: #f9f7ff;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        .achievements-tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+        
+        .achievements-tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
+        .achievements-tab.active {
+            border-bottom-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .achievement-item {
+            background: #f9f7ff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s;
+        }
+        
+        .achievement-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .achievement-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .achievement-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .achievement-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+        
+        .achievement-date {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        
+        .achievement-locked {
+            opacity: 0.5;
+            filter: grayscale(1);
+        }
+        
+        .achievement-locked::after {
+            content: '\f023';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: var(--text-light);
+        }
+        
+        .achievement-progress {
+            margin-top: 1rem;
+        }
+        
+        .progress-bar-container {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+        
+        .progress-value {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            text-align: right;
+        }
+        
+        .achievement-rarity {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+            color: white;
+        }
+        
+        .rarity-common {
+            background-color: #78909c;
+        }
+        
+        .rarity-uncommon {
+            background-color: #43a047;
+        }
+        
+        .rarity-rare {
+            background-color: #1e88e5;
+        }
+        
+        .rarity-epic {
+            background-color: #8e24aa;
+        }
+        
+        .rarity-legendary {
+            background-color: #ff6f00;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+        }
+        
+        .no-data i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        @media (max-width: 768px) {
+            .achievements-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+            
+            .achievements-stats {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .achievements-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-gamepad"></i>
+                    <span>GameHub</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                        <li><a href="index.html#featured"><i class="fas fa-star"></i> 特色游戏</a></li>
+                        <li><a href="index.html#games"><i class="fas fa-dice"></i> 全部游戏</a></li>
+                        <li><a href="categories.html"><i class="fas fa-th-large"></i> 游戏分类</a></li>
+                        <li><a href="guides.html"><i class="fas fa-book"></i> 游戏攻略</a></li>
+                        <li><a href="reviews.html"><i class="fas fa-comments"></i> 游戏评测</a></li>
+                        <li><a href="about.html"><i class="fas fa-info-circle"></i> 关于我们</a></li>
+                        <li id="auth-menu-item">
+                            <!-- 由auth.js动态填充 -->
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Title -->
+    <section class="container">
+        <h1 class="section-title">我的成就</h1>
+        
+        <div class="achievements-container">
+            <div class="achievements-header">
+                <div class="achievements-title">游戏成就</div>
+                <div class="achievements-stats">
+                    <div class="achievement-stat">
+                        <div class="stat-value" id="total-achievements">0</div>
+                        <div class="stat-label">总成就数</div>
+                    </div>
+                    <div class="achievement-stat">
+                        <div class="stat-value" id="unlocked-achievements">0</div>
+                        <div class="stat-label">已解锁</div>
+                    </div>
+                    <div class="achievement-stat">
+                        <div class="stat-value" id="completion-rate">0%</div>
+                        <div class="stat-label">完成率</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="achievements-tabs" id="achievements-tabs">
+                <div class="achievements-tab active" data-tab="all">全部成就</div>
+                <div class="achievements-tab" data-tab="unlocked">已解锁</div>
+                <div class="achievements-tab" data-tab="locked">未解锁</div>
+                <!-- 游戏特定标签由JavaScript动态填充 -->
+            </div>
+            
+            <!-- 全部成就 -->
+            <div class="tab-content active" id="all-content">
+                <div class="achievements-grid" id="all-achievements">
+                    <!-- 由JavaScript动态填充 -->
+                </div>
+            </div>
+            
+            <!-- 已解锁成就 -->
+            <div class="tab-content" id="unlocked-content">
+                <div class="achievements-grid" id="unlocked-achievements-grid">
+                    <!-- 由JavaScript动态填充 -->
+                </div>
+            </div>
+            
+            <!-- 未解锁成就 -->
+            <div class="tab-content" id="locked-content">
+                <div class="achievements-grid" id="locked-achievements-grid">
+                    <!-- 由JavaScript动态填充 -->
+                </div>
+            </div>
+            
+            <!-- 游戏特定成就由JavaScript动态创建 -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-main">
+                    <p>GameHub - 您的在线游戏平台</p>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">首页</a>
+                    <span class="separator">|</span>
+                    <a href="about.html">关于我们</a>
+                    <span class="separator">|</span>
+                    <a href="contact.html">联系我们</a>
+                    <span class="separator">|</span>
+                    <a href="terms.html">服务条款</a>
+                    <span class="separator">|</span>
+                    <a href="privacy.html">隐私政策</a>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 GameHub. 保留所有权利.
+            </div>
+        </div>
+    </footer>
+
+    <!-- 引入脚本 -->
+    <script src="js/auth.js"></script>
+    <script>
+        // 成就列表
+        const achievementsList = [
+            {
+                id: 'first_game',
+                title: '初次体验',
+                description: '第一次玩游戏',
+                icon: 'fa-gamepad',
+                game: 'global',
+                rarity: 'common',
+                progress: 100
+            },
+            {
+                id: 'game_explorer',
+                title: '游戏探索者',
+                description: '尝试3种不同的游戏',
+                icon: 'fa-compass',
+                game: 'global',
+                rarity: 'common',
+                progress: 100
+            },
+            {
+                id: 'game_master',
+                title: '游戏大师',
+                description: '尝试所有游戏',
+                icon: 'fa-crown',
+                game: 'global',
+                rarity: 'rare',
+                progress: 60
+            },
+            {
+                id: 'loyal_player',
+                title: '忠实玩家',
+                description: '累计游戏10次',
+                icon: 'fa-medal',
+                game: 'global',
+                rarity: 'uncommon',
+                progress: 80
+            },
+            {
+                id: 'game_addict',
+                title: '游戏成瘾',
+                description: '累计游戏50次',
+                icon: 'fa-fire',
+                game: 'global',
+                rarity: 'epic',
+                progress: 30
+            },
+            {
+                id: 'reviewer',
+                title: '游戏评论家',
+                description: '评价一款游戏',
+                icon: 'fa-comment',
+                game: 'global',
+                rarity: 'common',
+                progress: 100
+            },
+            {
+                id: 'social_gamer',
+                title: '社交玩家',
+                description: '分享一款游戏',
+                icon: 'fa-share-alt',
+                game: 'global',
+                rarity: 'common',
+                progress: 100
+            },
+            {
+                id: 'night_owl',
+                title: '夜猫子',
+                description: '在晚上10点后玩游戏',
+                icon: 'fa-moon',
+                game: 'global',
+                rarity: 'uncommon',
+                progress: 100
+            },
+            {
+                id: 'snake_beginner',
+                title: '蛇初体验',
+                description: '在贪吃蛇游戏中获得10分',
+                icon: 'fa-snake',
+                game: 'snake',
+                rarity: 'common',
+                progress: 100
+            },
+            {
+                id: 'snake_master',
+                title: '蛇王',
+                description: '在贪吃蛇游戏中获得50分',
+                icon: 'fa-crown',
+                game: 'snake',
+                rarity: 'rare',
+                progress: 40
+            },
+            {
+                id: '2048_beginner',
+                title: '2048初体验',
+                description: '在2048游戏中达到512块',
+                icon: 'fa-th',
+                game: '2048',
+                rarity: 'common',
+                progress: 100
+            },
+            {
+                id: '2048_master',
+                title: '2048大师',
+                description: '在2048游戏中达到2048块',
+                icon: 'fa-trophy',
+                game: '2048',
+                rarity: 'epic',
+                progress: 50
+            },
+            {
+                id: 'memory_beginner',
+                title: '记忆初体验',
+                description: '在记忆翻牌游戏中完成一局',
+                icon: 'fa-brain',
+                game: 'memory',
+                rarity: 'common',
+                progress: 100
+            },
+            {
+                id: 'memory_master',
+                title: '记忆大师',
+                description: '在记忆翻牌游戏中用最少的步数完成',
+                icon: 'fa-lightbulb',
+                game: 'memory',
+                rarity: 'legendary',
+                progress: 20
+            },
+            {
+                id: 'tictactoe_beginner',
+                title: '井字初体验',
+                description: '在井字棋游戏中完成一局',
+                icon: 'fa-hashtag',
+                game: 'tictactoe',
+                rarity: 'common',
+                progress: 100
+            },
+            {
+                id: 'tictactoe_master',
+                title: '井字大师',
+                description: '在井字棋游戏中连胜3局',
+                icon: 'fa-award',
+                game: 'tictactoe',
+                rarity: 'rare',
+                progress: 66
+            }
+        ];
+        
+        // 导出成就列表，供其他脚本使用
+        window.GameAchievements = achievementsList;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查用户是否登录
+            if (!UserAuth.currentUser) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // 获取用户成就
+            UserAuth.getUserAchievements().then(unlockedAchievements => {
+                // 更新成就统计
+                updateAchievementStats(unlockedAchievements);
+                
+                // 创建游戏标签
+                createGameTabs();
+                
+                // 加载成就
+                loadAchievements(unlockedAchievements);
+                
+                // 绑定标签切换事件
+                bindTabEvents();
+            });
+        });
+        
+        // 更新成就统计
+        function updateAchievementStats(unlockedAchievements) {
+            const totalAchievements = achievementsList.length;
+            const unlockedCount = unlockedAchievements.length;
+            const completionRate = Math.round((unlockedCount / totalAchievements) * 100);
+            
+            document.getElementById('total-achievements').textContent = totalAchievements;
+            document.getElementById('unlocked-achievements').textContent = unlockedCount;
+            document.getElementById('completion-rate').textContent = completionRate + '%';
+        }
+        
+        // 创建游戏标签
+        function createGameTabs() {
+            const tabsContainer = document.getElementById('achievements-tabs');
+            
+            // 获取所有游戏
+            const games = [...new Set(achievementsList.map(a => a.game))];
+            
+            // 添加游戏标签
+            games.forEach(game => {
+                if (game === 'global') return; // 跳过全局成就
+                
+                const gameTab = document.createElement('div');
+                gameTab.className = 'achievements-tab';
+                gameTab.setAttribute('data-tab', game);
+                
+                // 设置游戏名称
+                let gameName = game.charAt(0).toUpperCase() + game.slice(1);
+                if (game === 'snake') gameName = '贪吃蛇';
+                else if (game === '2048') gameName = '2048';
+                else if (game === 'memory') gameName = '记忆翻牌';
+                else if (game === 'tictactoe') gameName = '井字棋';
+                
+                gameTab.textContent = gameName;
+                tabsContainer.appendChild(gameTab);
+                
+                // 创建对应的内容区域
+                const gameContent = document.createElement('div');
+                gameContent.className = 'tab-content';
+                gameContent.id = game + '-content';
+                
+                const gameGrid = document.createElement('div');
+                gameGrid.className = 'achievements-grid';
+                gameGrid.id = game + '-achievements';
+                
+                gameContent.appendChild(gameGrid);
+                document.querySelector('.achievements-container').appendChild(gameContent);
+            });
+        }
+        
+        // 加载成就
+        function loadAchievements(unlockedAchievements) {
+            // 加载全部成就
+            loadAchievementsByType('all', achievementsList, unlockedAchievements);
+            
+            // 加载已解锁成就
+            const unlockedList = achievementsList.filter(a => unlockedAchievements.includes(a.id));
+            loadAchievementsByType('unlocked', unlockedList, unlockedAchievements);
+            
+            // 加载未解锁成就
+            const lockedList = achievementsList.filter(a => !unlockedAchievements.includes(a.id));
+            loadAchievementsByType('locked', lockedList, unlockedAchievements);
+            
+            // 加载游戏特定成就
+            const games = [...new Set(achievementsList.map(a => a.game))];
+            games.forEach(game => {
+                if (game === 'global') return; // 跳过全局成就
+                
+                const gameAchievements = achievementsList.filter(a => a.game === game);
+                loadAchievementsByType(game, gameAchievements, unlockedAchievements);
+            });
+        }
+        
+        // 按类型加载成就
+        function loadAchievementsByType(type, achievements, unlockedAchievements) {
+            const container = document.getElementById(type + '-achievements') || document.getElementById(type + '-achievements-grid');
+            if (!container) return;
+            
+            // 清空容器
+            container.innerHTML = '';
+            
+            // 检查是否有成就
+            if (achievements.length === 0) {
+                container.innerHTML = `
+                    <div class="no-data">
+                        <i class="fas fa-trophy"></i>
+                        <p>暂无成就</p>
+                        <p>继续游戏并完成挑战来解锁成就</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 添加成就项
+            achievements.forEach(achievement => {
+                const isUnlocked = unlockedAchievements.includes(achievement.id);
+                
+                const achievementItem = document.createElement('div');
+                achievementItem.className = `achievement-item ${isUnlocked ? '' : 'achievement-locked'}`;
+                achievementItem.setAttribute('data-achievement', achievement.id);
+                
+                // 设置稀有度标签
+                let rarityText = '普通';
+                if (achievement.rarity === 'uncommon') rarityText = '少见';
+                else if (achievement.rarity === 'rare') rarityText = '稀有';
+                else if (achievement.rarity === 'epic') rarityText = '史诗';
+                else if (achievement.rarity === 'legendary') rarityText = '传说';
+                
+                achievementItem.innerHTML = `
+                    <div class="achievement-rarity rarity-${achievement.rarity}">${rarityText}</div>
+                    <div class="achievement-icon">
+                        <i class="fas ${achievement.icon}"></i>
+                    </div>
+                    <div class="achievement-title">${achievement.title}</div>
+                    <div class="achievement-desc">${achievement.description}</div>
+                    ${isUnlocked ? `<div class="achievement-date">解锁于 ${getRandomDate()}</div>` : `
+                    <div class="achievement-progress">
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: ${achievement.progress}%"></div>
+                        </div>
+                        <div class="progress-value">${achievement.progress}%</div>
+                    </div>
+                    `}
+                `;
+                
+                container.appendChild(achievementItem);
+            });
+        }
+        
+        // 绑定标签切换事件
+        function bindTabEvents() {
+            const tabs = document.querySelectorAll('.achievements-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 移除所有标签的活动状态
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // 添加当前标签的活动状态
+                    this.classList.add('active');
+                    
+                    // 显示对应的内容
+                    const tabId = this.getAttribute('data-tab');
+                    const tabContents = document.querySelectorAll('.tab-content');
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(tabId + '-content').classList.add('active');
+                });
+            });
+        }
+        
+        // 生成随机日期（过去30天内）
+        function getRandomDate() {
+            const now = new Date();
+            const daysAgo = Math.floor(Math.random() * 30);
+            const randomDate = new Date(now.getTime() - daysAgo * 24 * 60 * 60 * 1000);
+            
+            return `${randomDate.getFullYear()}-${(randomDate.getMonth() + 1).toString().padStart(2, '0')}-${randomDate.getDate().toString().padStart(2, '0')}`;
+        }
+    </script>
+</body>
+</html>
