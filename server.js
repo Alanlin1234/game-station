@@ -50,6 +50,38 @@ app.get('/sitemap.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'sitemap.html'));
 });
 
+app.get('/reviews.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'reviews.html'));
+});
+
+app.get('/achievements.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'achievements.html'));
+});
+
+app.get('/categories.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'categories.html'));
+});
+
+app.get('/cookies.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'cookies.html'));
+});
+
+app.get('/disclaimer.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'disclaimer.html'));
+});
+
+app.get('/guides.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'guides.html'));
+});
+
+app.get('/profile.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'profile.html'));
+});
+
+app.get('/saved-games.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'saved-games.html'));
+});
+
 // SEO文件路由
 app.get('/sitemap.xml', (req, res) => {
     res.type('application/xml');
