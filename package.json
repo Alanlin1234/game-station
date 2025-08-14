@@ -8,7 +8,8 @@
     "dev": "nodemon server.js",
     "test": "jest",
     "test-api": "node test-api.js",
-    "init-data": "node scripts/initData.js"
+    "init-data": "node scripts/initData.js",
+    "build": "echo 'Build completed'"
   },
   "dependencies": {
     "express": "^4.18.2",
@@ -39,4 +40,4 @@
   ],
   "author": "GameHub Team",
   "license": "MIT"
-} 
+}
